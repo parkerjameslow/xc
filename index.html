@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6A Girls State Form Guide — 2026 Projections</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#161B22;        /* slate near-black */
+    --ink-soft:#2A313B;
+    --paper:#FBFAF7;      /* warm sheet */
+    --panel:#FFFFFF;
+    --mist:#E6E2D8;       /* hairline */
+    --mist-2:#F0EDE4;
+    --lane:#1C7A4D;       /* up / brand green */
+    --lane-dim:#E4F1E9;
+    --chute:#B23A48;      /* down red */
+    --chute-dim:#F7E7E9;
+    --amber:#C8890B;      /* new / highlight */
+    --amber-dim:#F7EDD5;
+    --muted:#6B7280;
+    --muted-2:#9AA1AB;
+    --shadow:0 1px 2px rgba(20,24,31,.06),0 8px 24px rgba(20,24,31,.05);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.4;
+    padding-bottom:64px;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 14px}
+
+  /* ---------- Header ---------- */
+  header{
+    background:var(--ink);
+    color:var(--paper);
+    border-bottom:3px solid var(--lane);
+  }
+  .head-inner{max-width:960px;margin:0 auto;padding:18px 14px 16px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .brand{display:flex;flex-direction:column;gap:2px}
+  .eyebrow{font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.16em;text-transform:uppercase;font-size:12px;color:var(--lane);}
+  .eyebrow .dot{color:var(--amber)}
+  h1{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;line-height:.98;margin:0;letter-spacing:.01em}
+  .sub{color:#B9C0C9;font-size:12.5px;margin-top:3px}
+  .settings-wrap{position:relative;flex:none}
+  .gear-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;width:40px;height:40px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+  .gear-btn:hover{background:rgba(255,255,255,.18)}
+  .gear-btn svg{display:block}
+  .settings-menu{position:absolute;right:0;top:48px;background:#fff;border:1px solid var(--mist);border-radius:12px;box-shadow:0 12px 34px rgba(20,24,31,.22);padding:6px;min-width:196px;z-index:60}
+  .settings-menu[hidden]{display:none}
+  .settings-menu .menu-item{width:100%;display:flex;align-items:center;background:none;border:none;border-radius:8px;padding:11px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:14px;color:var(--ink);cursor:pointer;text-align:left}
+  .settings-menu .menu-item:hover{background:var(--lane-dim);color:var(--lane)}
+
+  /* ---------- Tabs ---------- */
+  nav.tabs{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--mist);}
+  .tabs-inner{max-width:960px;margin:0 auto;display:flex;gap:2px;padding:0 8px;overflow-x:auto}
+  .tab{
+    font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:15px;
+    background:none;border:none;color:var(--muted);padding:13px 12px 11px;cursor:pointer;white-space:nowrap;
+    border-bottom:3px solid transparent;margin-bottom:-1px;
+  }
+  .tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+
+  /* ---------- Controls row ---------- */
+  .controls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:14px 2px 4px}
+  .ctl{display:flex;flex-direction:column;gap:4px}
+  .ctl label{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .ctl select,.ctl input[type=range]{font-family:inherit}
+  .ctl select{border:1px solid var(--mist);background:#fff;border-radius:8px;padding:7px 9px;font-size:14px;color:var(--ink)}
+  .rangewrap{display:flex;align-items:center;gap:9px}
+  input[type=range]{accent-color:var(--lane);width:130px}
+  .rangeval{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:15px;min-width:34px}
+
+  .note{font-size:12.5px;color:var(--muted);padding:2px 2px 0;line-height:1.5}
+
+  section{margin-top:8px}
+  .section-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.02em;margin:20px 2px 8px;display:flex;align-items:baseline;gap:9px}
+  .section-title .count{font-size:13px;color:var(--muted);font-weight:600;font-family:'Inter',sans-serif}
+
+  /* ---------- Table / cards ---------- */
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  thead th{
+    font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.05em;text-transform:uppercase;font-size:12.5px;
+    color:var(--muted);text-align:left;padding:7px 8px;border-bottom:2px solid var(--mist);white-space:nowrap;
+  }
+  thead th.num{text-align:right}
+  tbody tr{border-bottom:1px solid var(--mist-2)}
+  tbody td{padding:9px 8px;vertical-align:middle}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  .time{font-variant-numeric:tabular-nums;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:16px;letter-spacing:.02em}
+
+  .rankcell{width:52px}
+  .bib{
+    font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;line-height:1;
+    display:inline-flex;align-items:center;justify-content:center;min-width:38px;height:34px;padding:0 7px;
+    background:var(--ink);color:#fff;border-radius:6px;
+  }
+  tr.podium .bib{background:var(--lane)}
+  .namecell .nm{font-weight:600;font-size:15px}
+  .namecell .meta{font-size:12px;color:var(--muted);margin-top:1px}
+  .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:1.5px 6px;border-radius:100px;margin-left:6px;vertical-align:middle}
+  .tag.new{background:var(--amber-dim);color:var(--amber)}
+  .tag.form{background:var(--lane-dim);color:var(--lane)}
+  .tag.pre{background:var(--mist-2);color:var(--muted)}
+
+  .delta{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:6px;white-space:nowrap}
+  .delta.up{background:var(--lane-dim);color:var(--lane)}
+  .delta.down{background:var(--chute-dim);color:var(--chute)}
+  .delta.same{background:var(--mist-2);color:var(--muted)}
+  .delta.newp{background:var(--amber-dim);color:var(--amber)}
+  .was{font-size:11px;color:var(--muted-2);display:block;margin-top:2px;font-variant-numeric:tabular-nums}
+  .teampos{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:14px;color:var(--ink-soft)}
+
+  /* stacked card layout on phones */
+  @media (max-width:700px){
+    table,thead,tbody,th,td,tr{display:block}
+    thead{display:none}
+    tbody tr{
+      background:var(--panel);border:1px solid var(--mist);border-radius:12px;margin-bottom:10px;padding:12px 12px 10px;
+      display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"rank name delta" "rank meta meta";gap:2px 12px;box-shadow:var(--shadow);
+      border-bottom:1px solid var(--mist);
+    }
+    tbody tr td{padding:0;border:none}
+    td.rankcell{grid-area:rank;align-self:center}
+    td.namecell{grid-area:name}
+    td.deltacell{grid-area:delta;text-align:right;align-self:start}
+    td.metacell{grid-area:meta;display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;padding-top:8px;border-top:1px dashed var(--mist)!important}
+    td.metacell .mi{display:flex;flex-direction:column}
+    td.metacell .mi .k{font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600}
+    td.metacell .mi .v{font-variant-numeric:tabular-nums}
+    .bib{font-size:26px;min-width:44px;height:40px}
+  }
+  /* on desktop, hide the mobile meta cell */
+  @media (min-width:701px){ td.metacell{display:none} }
+
+  /* ---------- Update tab ---------- */
+  .card{background:var(--panel);border:1px solid var(--mist);border-radius:14px;padding:16px;box-shadow:var(--shadow);margin-top:12px}
+  .card h3{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;margin:0 0 3px;letter-spacing:.02em}
+  .card p.hint{font-size:12.5px;color:var(--muted);margin:0 0 12px}
+  .field{display:flex;flex-direction:column;gap:5px;margin-bottom:11px}
+  .field label{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .field input,.field select{border:1px solid var(--mist);border-radius:9px;padding:10px 11px;font-size:15px;font-family:inherit;background:#fff;color:var(--ink);width:100%}
+  .field textarea{border:1px solid var(--mist);border-radius:9px;padding:10px 11px;font-size:14px;font-family:ui-monospace,Menlo,Consolas,monospace;background:#fff;color:var(--ink);width:100%;resize:vertical;line-height:1.45}
+  .field textarea:focus{outline:2px solid var(--lane);outline-offset:0;border-color:transparent}
+  #parsePreview{margin-top:12px}
+  .pv-head{font-size:12.5px;color:var(--muted);margin-bottom:8px}
+  .pv-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--mist);border-radius:9px;margin-bottom:6px;background:#fff}
+  .pv-row.skip{opacity:.55}
+  .pv-row input[type=checkbox]{width:17px;height:17px;accent-color:var(--lane);flex:none}
+  .pv-row .pv-nm{flex:1;font-size:14px;font-weight:600}
+  .pv-row .pv-meta{font-size:12px;color:var(--muted)}
+  .pv-row .pv-time{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-variant-numeric:tabular-nums;font-size:15px}
+  .pv-row .pv-flag{font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--amber)}
+  .field input:focus,.field select:focus{outline:2px solid var(--lane);outline-offset:0;border-color:transparent}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .btn{font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:15px;border:none;border-radius:9px;padding:11px 16px;cursor:pointer}
+  .btn.primary{background:var(--lane);color:#fff}
+  .btn.primary:hover{background:#166B43}
+  .btn.ghost{background:#fff;border:1px solid var(--mist);color:var(--ink)}
+  .btn.ghost:hover{background:var(--mist-2)}
+  .btn.tiny{font-size:12px;padding:5px 9px;border-radius:7px}
+  .btn.danger{background:#fff;border:1px solid var(--chute);color:var(--chute)}
+
+  .loglist{margin-top:8px}
+  .logitem{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 11px;border:1px solid var(--mist);border-radius:10px;margin-bottom:7px;background:#fff}
+  .logitem .li-main{font-size:14px}
+  .logitem .li-main b{font-weight:600}
+  .logitem .li-time{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:16px;font-variant-numeric:tabular-nums;margin-right:6px}
+  .empty{color:var(--muted);font-size:13px;padding:12px 4px;text-align:center;border:1px dashed var(--mist);border-radius:10px}
+
+  /* ---------- Teams tab ---------- */
+  .teamcard{background:var(--panel);border:1px solid var(--mist);border-radius:14px;padding:14px 15px;box-shadow:var(--shadow);margin-top:12px}
+  .teamhead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:8px}
+  .teamhead .tn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.02em}
+  .teamhead .ts{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px}
+  .teamhead .ts small{color:var(--muted);font-weight:500;font-size:12px}
+  .flag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:100px}
+  .flag.full{background:var(--lane-dim);color:var(--lane)}
+  .flag.short{background:var(--amber-dim);color:var(--amber)}
+  .scorer{display:flex;align-items:center;gap:9px;padding:5px 0;font-size:14px;border-top:1px dashed var(--mist)}
+  .scorer .sp{font-family:'Barlow Condensed',sans-serif;font-weight:700;width:24px;color:var(--muted)}
+  .scorer .snm{flex:1}
+  .scorer .stime{font-variant-numeric:tabular-nums;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:15px}
+  .scorer .sgrade{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;color:var(--muted);width:26px;text-align:center;flex:none}
+  .scorer.fill{color:var(--amber)}
+  .scorer.fill .sp{color:var(--amber)}
+  .scorer.displacer{opacity:.5}
+
+  .standings{list-style:none;margin:2px 0 10px;padding:0}
+  .standings li{display:flex;align-items:baseline;gap:12px;padding:10px 12px;border:1px solid var(--mist);border-bottom:none;background:var(--panel)}
+  .standings li:first-child{border-radius:12px 12px 0 0}
+  .standings li:last-child{border-bottom:1px solid var(--mist);border-radius:0 0 12px 12px}
+  .standings li .rk{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;color:var(--muted);min-width:34px}
+  .standings li .tm{flex:1;font-weight:600;font-size:15px}
+  .standings li .pts{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;font-variant-numeric:tabular-nums}
+  .standings li .pts small{color:var(--muted);font-weight:500;font-size:11px;letter-spacing:.03em}
+  .standings li.lead{background:var(--lane-dim)}
+  .standings li.lead .rk,.standings li.lead .pts{color:var(--lane)}
+  .standings li .star{color:var(--amber);font-weight:700}
+
+  /* ---------- Race results list (tap to expand) ---------- */
+  .listhint{font-size:12px;color:var(--muted);margin:0 2px 8px}
+  .rrlist{list-style:none;margin:0 0 8px;padding:0}
+  .rrow{border:1px solid var(--mist);border-bottom:none;background:var(--panel)}
+  .rrow:first-child{border-radius:12px 12px 0 0}
+  .rrow:last-child{border-bottom:1px solid var(--mist);border-radius:0 0 12px 12px}
+  .rrow-head{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto auto auto;align-items:center;gap:10px;background:none;border:none;cursor:pointer;padding:9px 11px;text-align:left;font-family:inherit;color:inherit}
+  .rrow-head:hover{background:var(--mist-2)}
+  .rrow.podium .bib{background:var(--lane)}
+  .rrow-name{min-width:0}
+  .rrow-name .nm{font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rrow-name .sub{display:block;font-size:11.5px;color:var(--muted);font-weight:500;margin-top:1px}
+  .rrow-time{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:16px;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+  .chev{color:var(--muted-2);transition:transform .18s ease;font-size:13px;width:12px}
+  .rrow.open .chev{transform:rotate(90deg)}
+  .rrow-detail{display:none;padding:2px 12px 13px}
+  .rrow.open .rrow-detail{display:block}
+  .rrgrid{display:flex;flex-direction:column;gap:1px;padding-top:10px;border-top:1px dashed var(--mist)}
+  .rrgrid .mi{display:flex;align-items:baseline;gap:0;padding:5px 0}
+  .rrgrid .mi .k{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600;flex:none}
+  .rrgrid .mi .k::after{content:"—";margin:0 9px;color:var(--muted-2)}
+  .rrgrid .mi .v{font-variant-numeric:tabular-nums;font-size:15px}
+  .rrgrid .mi .v.big{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px}
+  .rrraces{margin-top:11px;padding-top:10px;border-top:1px dashed var(--mist)}
+  .rrraces .k{font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:5px}
+  .rrraces .rc{display:flex;justify-content:space-between;font-size:13px;padding:2px 0}
+  .rrraces .rc .rt{font-variant-numeric:tabular-nums;font-family:'Barlow Condensed',sans-serif;font-weight:600}
+
+  /* ---------- Graduated panel ---------- */
+  details.grad{margin-top:14px;background:var(--panel);border:1px solid var(--mist);border-radius:12px;overflow:hidden}
+  details.grad summary{cursor:pointer;padding:12px 14px;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:16px;letter-spacing:.02em;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  details.grad summary::-webkit-details-marker{display:none}
+  details.grad[open] summary{border-bottom:1px solid var(--mist)}
+  .gradgrid{padding:6px 14px 14px;display:grid;grid-template-columns:1fr 1fr;gap:2px 18px}
+  .graditem{font-size:13px;padding:5px 0;border-bottom:1px dashed var(--mist-2);display:flex;justify-content:space-between;gap:8px}
+  .graditem .gp{color:var(--chute);font-weight:600;font-variant-numeric:tabular-nums}
+  @media (max-width:560px){.gradgrid{grid-template-columns:1fr}}
+
+  footer{max-width:960px;margin:26px auto 0;padding:16px 16px 0;border-top:1px solid var(--mist);color:var(--muted);font-size:12px;line-height:1.6}
+  footer b{color:var(--ink-soft)}
+
+  .hidden{display:none!important}
+  .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 18px;border-radius:100px;font-size:14px;box-shadow:0 8px 30px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:50}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(-4px)}
+
+  /* ---------- Print ---------- */
+  .print-only{display:none}
+  @media print{
+    @page{size:letter portrait;margin:14mm 12mm}
+    body{background:#fff;padding:0}
+    nav.tabs,.settings-wrap,.update-view,.toast,.chev,.listhint,details.grad summary::after{display:none!important}
+    header{background:#fff;color:#000;border-bottom:2px solid #000}
+    .eyebrow{color:#000}.sub{color:#333}
+    .print-only{display:block}
+    section.pane{display:block!important}
+    /* expand every runner row so the PDF shows full detail */
+    .rrow-detail{display:block!important}
+    .rrow-head{background:none!important}
+    .rrow{break-inside:avoid}
+    .bib{background:#000!important;color:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .rrow.podium .bib,.standings li.lead{background:#1C7A4D!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .delta,.tag{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .card,.teamcard,.standings li{break-inside:avoid}
+    footer{page-break-before:avoid}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-inner">
+    <div class="brand">
+      <div class="eyebrow">Utah 6A Girls Cross Country <span class="dot">•</span> State Form Guide</div>
+      <h1>2026 State Meet Projections</h1>
+      <div class="sub">Baseline: 2025 UHSAA State Championships (Sugar House Park, Oct 29) · returners only · updates live as you log 2026 races</div>
+    </div>
+    <div class="settings-wrap">
+      <button class="gear-btn" id="gearBtn" aria-label="Settings" aria-expanded="false" aria-haspopup="true">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
+      <div class="settings-menu" id="settingsMenu" hidden role="menu">
+        <button class="menu-item" id="pdfBtn" role="menuitem">⤓&nbsp; Save / Share PDF</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="tabs-inner" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-pane="projections">Race Results</button>
+    <button class="tab" role="tab" aria-selected="false" data-pane="teams">Team Results</button>
+    <button class="tab" role="tab" aria-selected="false" data-pane="update">Log a Race</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- print header -->
+  <div class="print-only" style="margin:8px 0 4px;font-size:12px;color:#444">
+    Generated projection sheet — individual placements are re-ranked among returning athletes plus any runners you added.
+  </div>
+
+  <!-- ============ RACE RESULTS PANE ============ -->
+  <section class="pane" id="pane-projections">
+    <div class="note" id="basisNote"></div>
+
+    <div class="section-title">2026 projected order <span class="count" id="indivCount"></span></div>
+    <div class="listhint">Tap a name to see last year's place &amp; time, projected time, and team position.</div>
+
+    <ol class="rrlist" id="projList"></ol>
+
+    <details class="grad">
+      <summary><span>Graduated — removed from 2025 field</span><span class="count" id="gradCount"></span></summary>
+      <div class="gradgrid" id="gradGrid"></div>
+    </details>
+  </section>
+
+  <!-- ============ TEAMS PANE ============ -->
+  <section class="pane hidden" id="pane-teams">
+    <div class="section-title">Projected team standings <span class="count">top 5 score</span></div>
+    <ol class="standings" id="teamStandings"></ol>
+    <div class="note">
+      Every squad is scored on its top five (lowest projected places win, cross-country style). Where a team lost scorers,
+      the empty spots are filled with <b>projected JV</b> runners — estimated just behind the team's slowest returner — so no team
+      is left incomplete. Those rows are tagged <span class="tag new" style="margin:0">proj JV</span> and a
+      <b>*</b> marks any score that leans on them. Swap in real names and times anytime on the <b>Log a Race → Add a runner</b> tab;
+      a real add replaces a projected fill automatically.
+    </div>
+    <div id="teamsWrap"></div>
+  </section>
+
+  <!-- ============ UPDATE PANE ============ -->
+  <section class="pane hidden update-view" id="pane-update">
+    <div class="card">
+      <h3>Fill teams from a results list</h3>
+      <p class="hint">Open a JV or region result on SportTrax/Athletic.net, select the runners, and paste here — it reads the stacked format those sites copy (name, grade, [team], time, splits all on separate lines). Then hit Read list. A web <b>link</b> won't work: this file can't open a URL, and those pages need a live browser. If the list doesn't tag teams, pick a default team below.</p>
+      <div class="field">
+        <label for="pasteTeam">Default team (optional)</label>
+        <select id="pasteTeam"><option value="">— detect from each line —</option></select>
+      </div>
+      <div class="field">
+        <label for="pasteBox">Paste results</label>
+        <textarea id="pasteBox" rows="6" placeholder="e.g.
+8   Charity Whitehead  10  [Lehi]  20:31.40
+12  Ruby Nelson  9  [Lehi]  21:05.90"></textarea>
+      </div>
+      <button class="btn primary" id="parseBtn">Read list</button>
+      <div id="parsePreview"></div>
+    </div>
+
+    <div class="card">
+      <h3>Log a 2026 race result</h3>
+      <p class="hint">Enter what a runner actually ran this season. Her projected time and her place on the board update immediately — someone racing slower than expected will slide down.</p>
+      <div class="field">
+        <label for="logRunner">Runner</label>
+        <select id="logRunner"></select>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="logMeet">Meet / date</label>
+          <input id="logMeet" placeholder="e.g. Twilight @ Art Dye">
+        </div>
+        <div class="field">
+          <label for="logTime">Time</label>
+          <input id="logTime" placeholder="mm:ss  e.g. 18:24">
+        </div>
+      </div>
+      <button class="btn primary" id="logAdd">Add result</button>
+    </div>
+
+    <div class="card">
+      <h3>Add a runner</h3>
+      <p class="hint">Two uses. <b>Complete a real returner</b> who finished below last year's top 50 (Lehi's 4th–7th, etc.): give her 2025 place, time, and grade and she becomes a true returner with an up/down arrow — and takes a “proj JV” slot on her team. <b>Or promote a JV runner</b> into varsity: leave the 2025 fields blank and just give a projected time. Tag JV promotes in the name, e.g. "Camille Shields (6th runner)".</p>
+      <div class="field">
+        <label for="newName">Name</label>
+        <input id="newName" placeholder="e.g. Charity Whitehead">
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="newTeam">Team</label>
+          <select id="newTeam"></select>
+        </div>
+        <div class="field">
+          <label for="newGrade">2025 grade (optional)</label>
+          <select id="newGrade">
+            <option value="">— JV promote —</option>
+            <option value="Fr">Freshman</option>
+            <option value="So">Sophomore</option>
+            <option value="Jr">Junior</option>
+          </select>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="newPlace">2025 state place (optional)</label>
+          <input id="newPlace" inputmode="numeric" placeholder="e.g. 54">
+        </div>
+        <div class="field">
+          <label for="newT25">2025 state time (optional)</label>
+          <input id="newT25" placeholder="mm:ss  e.g. 20:18">
+        </div>
+      </div>
+      <div class="field">
+        <label for="newTime">Projected 2026 time (used only if no 2025 time)</label>
+        <input id="newTime" placeholder="mm:ss  e.g. 20:05">
+      </div>
+      <button class="btn primary" id="newAdd">Add runner</button>
+    </div>
+
+    <div class="card">
+      <h3>Logged this season</h3>
+      <div class="loglist" id="logList"></div>
+      <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn ghost tiny" id="resetBtn">Clear all my inputs</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>How the projection works.</b> Every athlete's grade from the 2025 state results decides who returns: seniors are removed, everyone else moves up a class.
+    Projected time starts from her 2025 time minus a standard class improvement (freshman→soph −25s, soph→junior −18s, junior→senior −12s).
+    Once you log 2026 races, that runner's projection switches to her actual recent form and the whole board re-ranks.
+    <b>'26 place</b> is her rank among returners + anyone you add; the <b>move</b> chip compares it to her actual 2025 place.</p>
+    <p><b>Caveats.</b> Baseline is the full 2025 6A girls state field (all 117 finishers). Where a team graduated enough runners to leave fewer than seven returners, the gaps are filled with projected JV runners (tagged and asterisked) until you enter the real call-ups.
+    Times aren't course-adjusted, so compare 2026 marks sensibly (a hilly course will look "slow"). Realignment or transfers aren't accounted for automatically — add or remove runners as needed.
+    Projections are estimates, not predictions.</p>
+    <p style="color:#9AA1AB">Data: 2025 UHSAA 6A Girls State Championship results (Deseret News / UHSAA). Built as a personal planning tool.</p>
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   DATA — 2025 6A Girls State, top 50, with grade + time
+   grade is 2025 grade (Fr/So/Jr/Sr). Seniors are graduated.
+   ============================================================ */
+const ALL_2025 = [
+  {p:1, name:"Skye Jensen", team:"American Fork", grade:"Jr", t:1058.92},
+  {p:2, name:"Maya Bybee", team:"Lone Peak", grade:"Jr", t:1072.71},
+  {p:3, name:"Brielle Nilsson", team:"Lone Peak", grade:"Sr", t:1084.31},
+  {p:4, name:"Mae Glassford", team:"Lone Peak", grade:"Fr", t:1086.94},   // transferred from American Fork
+  {p:5, name:"Paityn Rohatinsky", team:"Lone Peak", grade:"Jr", t:1092.65},
+  {p:6, name:"Eliza Thornley", team:"Layton", grade:"So", t:1094.9},
+  {p:7, name:"Catherine Wald", team:"Weber", grade:"Sr", t:1098.31},
+  {p:8, name:"Cali Dooley", team:"American Fork", grade:"Fr", t:1099.98},
+  {p:9, name:"Hailey Atwater", team:"Lone Peak", grade:"Jr", t:1104.19},
+  {p:10, name:"Isabella Cram", team:"Davis", grade:"Jr", t:1104.21},
+  {p:11, name:"Sarah Watson", team:"American Fork", grade:"So", t:1109.08},
+  {p:12, name:"Tatum Brewer", team:"Lone Peak", grade:"So", t:1109.95},
+  {p:13, name:"Grace Swanson", team:"Riverton", grade:"Sr", t:1124.07},
+  {p:14, name:"Leah Larson", team:"Riverton", grade:"Sr", t:1124.98},
+  {p:15, name:"Talia Anderson", team:"Westlake", grade:"Sr", t:1125.45},
+  {p:16, name:"Laney Martin", team:"Lehi", grade:"So", t:1127.23},
+  {p:17, name:"Aubrey Meyers", team:"Westlake", grade:"Jr", t:1127.31},
+  {p:18, name:"Lily Clawson", team:"Herriman", grade:"Jr", t:1130.52},
+  {p:19, name:"Zoey Nilsson", team:"Lone Peak", grade:"Sr", t:1133.39},
+  {p:20, name:"Erin Christensen", team:"Davis", grade:"So", t:1133.91},
+  {p:21, name:"Maya Parker", team:"Westlake", grade:"Sr", t:1137.34},
+  {p:22, name:"Anna Bybee", team:"Lone Peak", grade:"Sr", t:1138.51},
+  {p:23, name:"Lucy Hawkins", team:"Skyridge", grade:"Sr", t:1141.56},
+  {p:24, name:"Brooklyn Tarr", team:"Mountain Ridge", grade:"Sr", t:1147.48},
+  {p:25, name:"Kennedy Hadley", team:"Syracuse", grade:"Sr", t:1148.72},
+  {p:26, name:"Ava Clawson", team:"Herriman", grade:"So", t:1149.32},
+  {p:27, name:"Lyla Swain", team:"Riverton", grade:"So", t:1151.86},
+  {p:28, name:"Shay Smith", team:"American Fork", grade:"Jr", t:1152.05},
+  {p:29, name:"Elizabeth Tolman", team:"Layton", grade:"Sr", t:1155.77},
+  {p:30, name:"Sophie Bahr", team:"American Fork", grade:"Jr", t:1159.66},
+  {p:31, name:"Ella Hodges", team:"Riverton", grade:"Jr", t:1168.17},
+  {p:32, name:"Adelaide Hale", team:"Weber", grade:"Fr", t:1168.59},
+  {p:33, name:"Rebekah Jacob", team:"American Fork", grade:"So", t:1171.51},
+  {p:34, name:"Ellie Chambers", team:"Syracuse", grade:"So", t:1175.57},
+  {p:35, name:"Clara Madsen", team:"Skyridge", grade:"Sr", t:1175.66},
+  {p:36, name:"Savanah Haynie", team:"Mountain Ridge", grade:"So", t:1178.96},
+  {p:37, name:"Heidi Mills", team:"Corner Canyon", grade:"Jr", t:1181.01},
+  {p:38, name:"Addison Loveland", team:"Davis", grade:"So", t:1182.9},
+  {p:39, name:"Alice Wilhelm", team:"Layton", grade:"So", t:1186.25},
+  {p:40, name:"Maggie Peterson", team:"Lehi", grade:"So", t:1186.96},
+  {p:41, name:"Jane Hawkins", team:"Skyridge", grade:"So", t:1187.73},
+  {p:42, name:"Amelia Poulson", team:"Riverton", grade:"Fr", t:1188.6},
+  {p:43, name:"Kate Lang", team:"Weber", grade:"Sr", t:1189.6},
+  {p:44, name:"Abigail Finley", team:"Skyridge", grade:"Fr", t:1194.59},
+  {p:45, name:"Eilley Baker", team:"Lehi", grade:"Fr", t:1196.51},
+  {p:46, name:"Marci Havens", team:"Westlake", grade:"Sr", t:1199.94},
+  {p:47, name:"Isabel Preston", team:"Riverton", grade:"Jr", t:1200.18},
+  {p:48, name:"Claire Wallgren", team:"Skyridge", grade:"Sr", t:1200.4},
+  {p:49, name:"Elsie Thacker", team:"Layton", grade:"Fr", t:1201.95},
+  {p:50, name:"Sophie Bush", team:"Cedar Valley", grade:"Jr", t:1202.12},
+  {p:51, name:"Julia Wheat", team:"Corner Canyon", grade:"Jr", t:1202.45},
+  {p:52, name:"Gracie Rodarte", team:"Weber", grade:"Sr", t:1202.99},
+  {p:53, name:"Avie McAdams", team:"Lehi", grade:"Jr", t:1203.42},
+  {p:54, name:"Laney Tolman", team:"Weber", grade:"Jr", t:1203.51},
+  {p:55, name:"Kaitlyn Liston", team:"Lehi", grade:"So", t:1203.57},
+  {p:56, name:"Rachel Crummett", team:"Davis", grade:"Jr", t:1204.56},
+  {p:57, name:"Reece Laker", team:"Syracuse", grade:"So", t:1207.26},
+  {p:58, name:"McKell Jensen", team:"Weber", grade:"Jr", t:1210.09},
+  {p:59, name:"Anne Colton", team:"Copper Hills", grade:"Jr", t:1210.73},
+  {p:60, name:"McKenzie Nielsen", team:"Copper Hills", grade:"Jr", t:1211.28},
+  {p:61, name:"Mia Taylor", team:"Westlake", grade:"Sr", t:1211.78},
+  {p:62, name:"Annika Ludwig", team:"Riverton", grade:"Sr", t:1212.25},
+  {p:63, name:"Breelyssa Leeper", team:"Herriman", grade:"Sr", t:1214.4},
+  {p:64, name:"Shelby Joy", team:"Weber", grade:"Sr", t:1215.73},
+  {p:65, name:"Eliza Knechtel", team:"Davis", grade:"Jr", t:1216.29},
+  {p:66, name:"Brecklyn Keogh", team:"Westlake", grade:"Fr", t:1220.76},
+  {p:67, name:"Chloe Bodine", team:"Skyridge", grade:"So", t:1223.49},
+  {p:68, name:"Courtney Burbidge", team:"Davis", grade:"Jr", t:1223.52},
+  {p:69, name:"Annie Newman", team:"Layton", grade:"Jr", t:1227.16},
+  {p:70, name:"McKenna Preston", team:"Herriman", grade:"Jr", t:1231.28},
+  {p:71, name:"Sadie Henderson", team:"Herriman", grade:"Sr", t:1233.91},
+  {p:72, name:"Gabriella May", team:"Farmington", grade:"Sr", t:1235.9},
+  {p:73, name:"Sophia Lord", team:"Copper Hills", grade:"So", t:1236.8},
+  {p:74, name:"Zoe Tanner", team:"Skyridge", grade:"So", t:1237.48},
+  {p:75, name:"Faith Sills", team:"Syracuse", grade:"Sr", t:1241.28},
+  {p:76, name:"Ella Draxler", team:"Davis", grade:"Sr", t:1242.33},
+  {p:77, name:"Allyse Browning", team:"Bingham", grade:"So", t:1245.0},
+  {p:78, name:"Mia Cook", team:"Westlake", grade:"Sr", t:1245.27},
+  {p:79, name:"Julieta Morales", team:"Corner Canyon", grade:"Sr", t:1246.25},
+  {p:80, name:"Kelsie Ballard", team:"Mountain Ridge", grade:"Sr", t:1255.97},
+  {p:81, name:"Lucy Sayre", team:"Mountain Ridge", grade:"Fr", t:1256.02},
+  {p:82, name:"Ellie Stubbs", team:"Cedar Valley", grade:"So", t:1260.58},
+  {p:83, name:"Belle Prince", team:"Corner Canyon", grade:"Jr", t:1263.24},
+  {p:84, name:"Hailey Mauch", team:"Mountain Ridge", grade:"Sr", t:1265.77},
+  {p:85, name:"Remy McAdams", team:"Lehi", grade:"Jr", t:1267.75},
+  {p:86, name:"Annabelle Leek", team:"Copper Hills", grade:"Sr", t:1284.71},
+  {p:87, name:"Madison Smith", team:"Cedar Valley", grade:"So", t:1294.45},
+  {p:88, name:"Paisley Atkinson", team:"Copper Hills", grade:"Fr", t:1294.66},
+  {p:89, name:"Sarah Parkin", team:"Layton", grade:"Sr", t:1295.87},
+  {p:90, name:"Mary Snow", team:"Farmington", grade:"So", t:1304.1},
+  {p:91, name:"Abigail Hooper", team:"Bingham", grade:"Jr", t:1309.73},
+  {p:92, name:"Evangeline Christensen", team:"Lehi", grade:"Jr", t:1314.0},
+  {p:93, name:"Eliza Nordgren", team:"Bingham", grade:"Fr", t:1314.42},
+  {p:94, name:"Taylor Osborn", team:"Corner Canyon", grade:"Jr", t:1316.52},
+  {p:95, name:"Sarah Miller", team:"Farmington", grade:"Sr", t:1316.64},
+  {p:96, name:"Mackenzie Dye", team:"Bingham", grade:"Sr", t:1316.72},
+  {p:97, name:"Adella Donohue", team:"Copper Hills", grade:"Fr", t:1319.3},
+  {p:98, name:"Brielle Leavitt", team:"Mountain Ridge", grade:"Fr", t:1330.81},
+  {p:99, name:"Shylie Thomas", team:"Farmington", grade:"Jr", t:1331.58},
+  {p:100, name:"Andi Sullivan", team:"Bingham", grade:"Fr", t:1333.03},
+  {p:101, name:"Maggie Dummer", team:"Layton", grade:"Sr", t:1333.48},
+  {p:102, name:"Sophie Smith", team:"Cedar Valley", grade:"So", t:1338.72},
+  {p:103, name:"Avery Barnes", team:"Syracuse", grade:"Fr", t:1344.32},
+  {p:104, name:"Addison Carter", team:"Mountain Ridge", grade:"So", t:1348.01},
+  {p:105, name:"Annie McKeehan", team:"Syracuse", grade:"Fr", t:1351.19},
+  {p:106, name:"Olivia Crist", team:"Corner Canyon", grade:"Jr", t:1352.63},
+  {p:107, name:"Khloe Pixton", team:"Corner Canyon", grade:"Fr", t:1358.25},
+  {p:108, name:"Brynley Whipple", team:"Bingham", grade:"So", t:1358.45},
+  {p:109, name:"Lauren Haughton", team:"Cedar Valley", grade:"Sr", t:1361.7},
+  {p:110, name:"Danielle Groom", team:"Cedar Valley", grade:"Jr", t:1375.74},
+  {p:111, name:"Kayley Edgar", team:"Cedar Valley", grade:"Fr", t:1379.01},
+  {p:112, name:"Claire Lundberg", team:"Copper Hills", grade:"So", t:1379.3},
+  {p:113, name:"Claire Kelley", team:"Bingham", grade:"Jr", t:1413.96},
+  {p:114, name:"Sophie Horne", team:"Syracuse", grade:"Jr", t:1421.37},
+  {p:115, name:"Eliza Nelson", team:"Farmington", grade:"So", t:1460.87},
+  {p:116, name:"McKenzie Hall", team:"Farmington", grade:"Jr", t:1469.8},
+  {p:117, name:"Samantha Garrick", team:"Farmington", grade:"Sr", t:1483.45},
+];
+
+/* advance grade + class-based improvement (seconds) applied at slider = 1.0 */
+const NEXT = {Fr:"So", So:"Jr", Jr:"Sr"};
+const IMPROVE = {Fr:25, So:18, Jr:12};
+
+const RETURNERS = ALL_2025.filter(r => r.grade !== "Sr").map(r => ({
+  id: "r"+r.p,
+  name: r.name, team: r.team,
+  grade25: r.grade, grade26: NEXT[r.grade]||"?",
+  place25: r.p, time25: r.t,
+  baseImprove: IMPROVE[r.grade]||0,
+  est: !!r.est
+}));
+const GRADUATED = ALL_2025.filter(r => r.grade === "Sr");
+const TEAMS = [...new Set(ALL_2025.map(r=>r.team))].sort();
+
+/* Real JV / non-state runners pulled from 2025 invitationals (UIAAA, UVU, TwiKnight),
+   filling each team toward a full 7. Times are from other courses (5k / 3mi) so they're
+   placed approximately. grade = 2025 grade. */
+const JV_FILLS = [
+  {name:"Mara Jensen",          team:"American Fork",  grade:"Jr", t:1172, src:"TwiKnight 19:32"},
+  {name:"Addyson Bergquist",    team:"Lone Peak",      grade:"Jr", t:1151, src:"TwiKnight 19:11"},
+  {name:"Camille Shields",      team:"Lone Peak",      grade:"So", t:1161, src:"UVU 19:21"},
+  {name:"Elizabeth Allen",      team:"Riverton",       grade:"Jr", t:1239, src:"UIAAA 20:39"},
+  {name:"Madison McGee",        team:"Riverton",       grade:"So", t:1243, src:"UIAAA 20:43"},
+  {name:"Emma Parker",          team:"Riverton",       grade:"Jr", t:1271, src:"UIAAA 21:11"},
+  {name:"Marley Comte",         team:"Westlake",       grade:"Jr", t:1274, src:"UIAAA 21:14"},
+  {name:"Emry Erickson",        team:"Westlake",       grade:"So", t:1367, src:"UIAAA 22:47"},
+  {name:"Hallie Peterson",      team:"Westlake",       grade:"Jr", t:1387, src:"UIAAA 23:07"},
+  {name:"Brooklyn Baker",       team:"Westlake",       grade:"Fr", t:1392, src:"UIAAA 23:12"},
+  {name:"Alyson Moffat",        team:"Westlake",       grade:"So", t:1400, src:"UIAAA 23:20"},
+  {name:"Elizabeth Newman",     team:"Skyridge",       grade:"Jr", t:1309, src:"UIAAA 21:49"},
+  {name:"Audrey Hauley",        team:"Skyridge",       grade:"So", t:1327, src:"UVU 22:07"},
+  {name:"Ella Burgon",          team:"Skyridge",       grade:"Jr", t:1344, src:"UVU 22:24"},
+  {name:"Hallee Van Tress",     team:"Herriman",       grade:"So", t:1128, src:"UIAAA 18:48"},
+  {name:"Sydney Steadman",      team:"Herriman",       grade:"Jr", t:1263, src:"UIAAA 21:03"},
+  {name:"Emma Hayes",           team:"Herriman",       grade:"So", t:1402, src:"UIAAA 23:22"},
+  {name:"Claire Hinkins",       team:"Herriman",       grade:"So", t:1449, src:"UIAAA 24:09"},
+  {name:"Akaeylia Schwendiman", team:"Mountain Ridge", grade:"Jr", t:1301, src:"TwiKnight 21:41"},
+  {name:"Claire Green",         team:"Mountain Ridge", grade:"Jr", t:1303, src:"TwiKnight 21:43"},
+  {name:"Hannah Turnbow",       team:"Mountain Ridge", grade:"Fr", t:1434, src:"UIAAA 23:54"},
+  {name:"Kenzie Randall",       team:"Corner Canyon",  grade:"Jr", t:1260, src:"TwiKnight 21:00"},
+  {name:"Heidi Corry",          team:"Cedar Valley",   grade:"Jr", t:1307, src:"TwiKnight 21:47"},
+  {name:"Olivia Mogensen",      team:"Copper Hills",   grade:"Fr", t:1465, src:"UIAAA 24:25"},
+  {name:"Molly Thatcher",       team:"Bingham",        grade:"So", t:1431, src:"UIAAA 23:51"},
+  {name:"Molly Memmott",        team:"Layton",         grade:"So", t:1273, src:"JV State 21:13"},
+  {name:"Tabetha Anderson",     team:"Layton",         grade:"Jr", t:1280, src:"JV State 21:20"},
+  {name:"Ally Cram",            team:"Layton",         grade:"Fr", t:1360, src:"JV State 22:40"},
+  {name:"Aspen Spencer",        team:"Syracuse",       grade:"So", t:1405, src:"JV State 23:25"},
+  {name:"Aliza Hall",           team:"Syracuse",       grade:"Jr", t:1440, src:"JV State 24:00"},
+  {name:"Sydney Ward",          team:"Farmington",     grade:"So", t:1474, src:"JV State 24:34"},
+  {name:"Annie Neslen",         team:"Farmington",     grade:"Fr", t:1510, src:"JV State 25:10"},
+  {name:"Lauren Haskin",        team:"Farmington",     grade:"Jr", t:1561, src:"Region 1 26:01"},
+  {name:"Kara Richards",        team:"Weber",          grade:"So", t:1244, src:"Region 1 20:44"},
+  {name:"Kiera Cooley",         team:"Weber",          grade:"Jr", t:1283, src:"Region 1 21:23"},
+  {name:"Taylee Jensen",        team:"Weber",          grade:"Fr", t:1346, src:"Region 1 22:26"},
+  {name:"Rose Smith",           team:"Weber",          grade:"So", t:1368, src:"Region 1 22:48"},
+];
+
+/* ============================================================
+   STATE (persisted)
+   ============================================================ */
+let STATE = { races:{}, added:[], projMode:"recent", impr:100 };
+const expanded = new Set();   // ids of open race-result rows
+const KEY = "xc6a_state_v1";
+let storageOK = true;
+
+function storageAvailable(){ return (typeof window!=="undefined" && window.storage && typeof window.storage.get==="function"); }
+async function loadState(){
+  try{
+    if(storageAvailable()){
+      const res = await window.storage.get(KEY);
+      if(res && res.value){ STATE = Object.assign(STATE, JSON.parse(res.value)); }
+    } else if(typeof localStorage!=="undefined"){
+      const v = localStorage.getItem(KEY);
+      if(v){ STATE = Object.assign(STATE, JSON.parse(v)); }
+    }
+  }catch(e){ /* first run / no storage: keep defaults */ }
+}
+async function saveState(){
+  try{
+    if(storageAvailable()){ await window.storage.set(KEY, JSON.stringify(STATE)); }
+    else if(typeof localStorage!=="undefined"){ localStorage.setItem(KEY, JSON.stringify(STATE)); }
+  }catch(e){ /* ignore */ }
+}
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function fmt(sec){
+  if(sec==null||isNaN(sec)) return "—";
+  const m=Math.floor(sec/60), s=sec-m*60;
+  return m+":"+ (s<10?"0":"") + s.toFixed(2);
+}
+function fmtShort(sec){
+  const m=Math.floor(sec/60), s=Math.round(sec-m*60);
+  return m+":"+(s<10?"0":"")+s;
+}
+function parseTime(str){
+  if(!str) return null;
+  str=str.trim();
+  if(str.includes(":")){
+    const [m,s]=str.split(":");
+    const mm=parseFloat(m), ss=parseFloat(s);
+    if(isNaN(mm)||isNaN(ss)) return null;
+    return mm*60+ss;
+  }
+  const v=parseFloat(str);
+  return isNaN(v)?null:v;
+}
+function ordinal(n){
+  const s=["th","st","nd","rd"], v=n%100;
+  return n+(s[(v-20)%10]||s[v]||s[0]);
+}
+
+/* ---- bulk results paste parser ---- */
+const CANON_TEAMS = ["American Fork","Lone Peak","Riverton","Westlake","Weber","Davis","Skyridge","Layton","Lehi","Herriman","Syracuse","Mountain Ridge","Corner Canyon","Cedar Valley","Copper Hills","Bingham","Farmington"];
+function normalizeTeam(raw){
+  if(!raw) return "";
+  let s = raw.replace(/\bHS\b/ig,"").replace(/high school/ig,"").replace(/\(ut\)/ig,"").replace(/[\[\]]/g,"").trim();
+  const low = s.toLowerCase();
+  for(const t of CANON_TEAMS){ if(low.includes(t.toLowerCase())) return t; }
+  if(low.includes("american fork")||low==="af") return "American Fork";
+  return s; // unknown team kept as-is
+}
+const GRADE_NUM = {"9":"Fr","10":"So","11":"Jr","12":"Sr"};
+const BARE_TIME = /^\d{1,2}:[0-5]\d(?:\.\d+)?$/;
+const RECORD_BADGE = /^(SR|PR|SB|PB|CR|MR|NR|=PR|=SR)$/i;
+function timeToSec(s){ const m=s.match(/(\d{1,2}):([0-5]?\d(?:\.\d+)?)/); return m?parseInt(m[1],10)*60+parseFloat(m[2]):null; }
+function isSplitLine(l){ return /splits:/i.test(l) || l.includes("(") || l.includes("•") || l.includes("\u2022"); }
+
+function parseResultsText(text, defaultTeam){
+  const lines = text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+  // "Stacked" export (SportTrax/Athletic.net copy) puts each field on its own line,
+  // which shows up as standalone finish-time lines. Detect and assemble by blocks.
+  const stacked = lines.some(l=>BARE_TIME.test(l));
+  return stacked ? parseStacked(lines, defaultTeam) : parseInline(lines, defaultTeam);
+}
+
+function parseStacked(lines, defaultTeam){
+  const out=[];
+  let parts=[], grade=null, team=null;
+  const flush=(timeSec)=>{
+    const name = parts.join(" ").replace(/\s{2,}/g," ").trim();
+    if(name) out.push({name, team: team||defaultTeam||"", grade, timeSec});
+    parts=[]; grade=null; team=null;
+  };
+  for(const l of lines){
+    if(/^splits:/i.test(l)) continue;
+    if(isSplitLine(l)) continue;                 // "17:35.27 (17:35.27)" etc.
+    if(BARE_TIME.test(l)){ flush(timeToSec(l)); continue; }   // finish time = end of runner
+    if(/^\[.+\]$/.test(l)){ team=normalizeTeam(l); continue; }
+    if(RECORD_BADGE.test(l)) continue;           // SR / PR record badges (not grade)
+    if(/^(9|10|11|12)$/.test(l)){ grade=GRADE_NUM[l]; continue; }  // grade before team
+    if(/^(Fr|So|Jr|Sr)$/i.test(l)){ grade=l[0].toUpperCase()+l[1].toLowerCase(); continue; }
+    if(/^\d+$/.test(l)) continue;                // stray place/rank number
+    parts.push(l.replace(/\b(SR|PR|SB|PB)\b/g,"").trim());     // a name word
+  }
+  return out;
+}
+
+function parseInline(lines, defaultTeam){
+  const out=[];
+  for(let raw of lines){
+    let line = raw.replace(/splits:.*/i,"").trim();
+    if(!line) continue;
+    const timeM = line.match(/(\d{1,2}):([0-5]?\d(?:\.\d+)?)/);
+    if(!timeM) continue;
+    const timeSec = parseInt(timeM[1],10)*60 + parseFloat(timeM[2]);
+    let team="";
+    const brM = line.match(/\[([^\]]+)\]/);
+    if(brM) team = normalizeTeam(brM[1]);
+    if(!team && defaultTeam) team = defaultTeam;
+    if(!team){ for(const t of CANON_TEAMS){ if(line.toLowerCase().includes(t.toLowerCase())){ team=t; break; } } }
+    let grade=null;
+    const body = line.replace(/^\s*\d+[\.\)]?\s+/,"").replace(timeM[0],"").replace(/\[[^\]]*\]/,"");
+    const gN = body.match(/\b(9|10|11|12)\b/);
+    if(gN) grade = GRADE_NUM[gN[1]];
+    else { const gW = body.match(/\b(Fr|So|Jr|Sr)\b/i); if(gW && !/^(SR|PR)$/i.test(gW[1])) grade = gW[1][0].toUpperCase()+gW[1][1].toLowerCase(); }
+    let name = line.replace(/^\s*\d+[\.\)]?\s+/,"").replace(/\[[^\]]*\]/,"").replace(/\b(Fr|So|Jr|Sr)\b/i,"").replace(timeM[0],"").replace(/\b(9|10|11|12)\b/,"").replace(/\bPR\b|\bSR\b/g,"").replace(/\d+/g,"").replace(/[•|]/g," ").replace(/\s{2,}/g," ").trim();
+    if(!name) continue;
+    out.push({name, team, grade, timeSec});
+  }
+  return out;
+}
+function isDuplicate(name, team){
+  const n = name.toLowerCase();
+  if(RETURNERS.some(r=>r.name.toLowerCase()===n)) return true;
+  if(ALL_2025.some(r=>r.name.toLowerCase()===n && r.grade==="Sr")) return true; // graduated
+  if(STATE.added.some(a=>a.name.toLowerCase()===n)) return true;
+  return false;
+}
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg; t.classList.add("show");
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("show"),1800);
+}
+
+/* ============================================================
+   PROJECTION ENGINE
+   returns array of runner objects with computed projTime, projBasis
+   ============================================================ */
+function computeRunners(){
+  const factor = STATE.impr/100;
+  const mode = STATE.projMode;
+
+  const list = [];
+
+  // seeded returners
+  for(const r of RETURNERS){
+    const races = STATE.races[r.id] || [];
+    const preseason = r.time25 - r.baseImprove*factor;
+    let projTime = preseason, basis="pre";
+    if(races.length && mode!=="preseason"){
+      projTime = projectFromRaces(races, mode); basis="form";
+    }
+    list.push({
+      id:r.id, name:r.name, team:r.team, grade26:r.grade26,
+      place25:r.place25, time25:r.time25,
+      projTime, basis, added:false, est:r.est,
+      races
+    });
+  }
+  // JV / non-state call-ups scanned from invitationals
+  for(let i=0;i<JV_FILLS.length;i++){
+    const f = JV_FILLS[i];
+    const id = "jv"+i;
+    const races = STATE.races[id] || [];
+    const improve = IMPROVE[f.grade]||0;
+    let projTime = f.t - improve*factor, basis="jv";
+    if(races.length && mode!=="preseason"){ projTime = projectFromRaces(races, mode); basis="form"; }
+    list.push({
+      id, name:f.name, team:f.team, grade26:NEXT[f.grade]||"?",
+      place25:null, time25:f.t,
+      projTime, basis, added:false, jv:true, jvSrc:f.src,
+      races
+    });
+  }
+  // user-added runners
+  for(const a of STATE.added){
+    const races = STATE.races[a.id] || [];
+    const isReturnerAdd = (a.time25!=null || a.place25!=null);
+    let projTime, basis;
+    if(races.length && mode!=="preseason"){
+      projTime = projectFromRaces(races, mode); basis="form";
+    } else if(a.time25!=null){
+      projTime = a.time25 - (IMPROVE[a.grade25]||0)*factor; basis="pre";
+    } else {
+      projTime = a.entryTime; basis="added";
+    }
+    list.push({
+      id:a.id, name:a.name, team:a.team,
+      grade26: a.grade25 ? (NEXT[a.grade25]||"Sr") : "—",
+      place25: (a.place25!=null?a.place25:null),
+      time25: (a.time25!=null?a.time25:null),
+      projTime, basis, added:true, isReturnerAdd,
+      races
+    });
+  }
+
+  // rank by projected time
+  list.sort((x,y)=> x.projTime - y.projTime);
+  list.forEach((r,i)=> r.projPlace = i+1);
+
+  // team position (rank within team by projected time)
+  const teamCounter={};
+  const byTeam={};
+  list.forEach(r=>{ (byTeam[r.team]=byTeam[r.team]||[]).push(r); });
+  for(const tm in byTeam){
+    byTeam[tm].sort((a,b)=>a.projTime-b.projTime);
+    byTeam[tm].forEach((r,i)=> r.teamPos=i+1);
+  }
+  return list;
+}
+function projectFromRaces(races, mode){
+  const times = races.map(x=>x.t);
+  if(mode==="best") return Math.min(...times);
+  if(mode==="avg")  return times.reduce((a,b)=>a+b,0)/times.length;
+  // recent: recency-weighted average of last up to 3 (newest highest weight)
+  const last = races.slice(-3);
+  const weights = last.map((_,i)=> i+1); // oldest=1 ... newest=n
+  const sw = weights.reduce((a,b)=>a+b,0);
+  return last.reduce((acc,r,i)=> acc + r.t*weights[i], 0)/sw;
+}
+
+/* ============================================================
+   RENDER — Projections
+   ============================================================ */
+function render(){
+  const runners = computeRunners();
+
+  // basis note
+  const withForm = runners.filter(r=>r.basis==="form").length;
+  const modeLabel = {recent:"recent 2026 form",best:"2026 season best",avg:"2026 average",preseason:"preseason model only"}[STATE.projMode];
+  document.getElementById("basisNote").innerHTML =
+    withForm
+      ? `Using <b>${modeLabel}</b> for ${withForm} runner${withForm>1?"s":""} with logged races; the rest use the preseason model.`
+      : `No 2026 races logged yet — showing the pure preseason model. Log races on the <b>Log a Race</b> tab and the board re-ranks.`;
+
+  document.getElementById("indivCount").textContent = runners.length + " returning + added";
+
+  const body = document.getElementById("projList");
+  body.innerHTML = runners.map(r=>{
+    // move chip
+    let chip;
+    if(r.place25==null){
+      chip = `<span class="delta newp">NEW</span>`;
+    } else {
+      const d = r.place25 - r.projPlace;
+      if(d>0) chip = `<span class="delta up">▲ ${d}</span>`;
+      else if(d<0) chip = `<span class="delta down">▼ ${-d}</span>`;
+      else chip = `<span class="delta same">— 0</span>`;
+    }
+    let btag = "";
+    if(r.basis==="form") btag = `<span class="tag form">2026</span>`;
+    else if(r.jv) btag = `<span class="tag new">JV</span>`;
+    else if(r.added && !r.isReturnerAdd) btag = `<span class="tag new">JV add</span>`;
+    // preseason model is the default for everyone pre-season — no badge needed
+
+    const teamShort = TEAM_ABBR[r.team]||r.team;
+    const podium = r.projPlace<=3 ? "podium":"";
+    const open = expanded.has(r.id) ? "open":"";
+    const gradeTxt = r.grade26==="—" ? "" : (r.grade26==="?" ? "grade TBD" : r.grade26+" (2026)");
+    const sub = r.team + (gradeTxt?" · "+gradeTxt:"") + (r.est?" · est. time":"") + (r.jv?" · JV call-up":"");
+
+    const racesHtml = r.races && r.races.length
+      ? `<div class="rrraces"><div class="k">2026 races logged</div>${
+          r.races.map(rc=>`<div class="rc"><span>${rc.meet||"race"}</span><span class="rt">${fmt(rc.t)}</span></div>`).join("")
+        }</div>`
+      : "";
+
+    const jvHtml = r.jv
+      ? `<div class="rrraces"><div class="k">JV call-up — 2025 mark</div><div class="rc"><span>${r.jvSrc||"invitational"}</span><span class="rt" style="color:var(--muted)">other course</span></div></div>`
+      : "";
+
+    return `<li class="rrow ${podium} ${open}" data-id="${r.id}">
+      <button class="rrow-head" aria-expanded="${open?"true":"false"}">
+        <span class="bib">${r.projPlace}</span>
+        <span class="rrow-name"><span class="nm">${r.name}${btag}</span><span class="sub">${sub}</span></span>
+        ${chip}
+        <span class="rrow-time">${fmt(r.projTime)}</span>
+        <span class="chev">▸</span>
+      </button>
+      <div class="rrow-detail">
+        <div class="rrgrid">
+          <div class="mi"><span class="k">Last year place</span><span class="v">${r.place25?ordinal(r.place25):(r.jv?"JV (not at state)":"—")}</span></div>
+          <div class="mi"><span class="k">Team position</span><span class="v">${teamShort} #${r.teamPos}</span></div>
+          <div class="mi"><span class="k">Last year time</span><span class="v">${r.time25?fmt(r.time25):"—"}${r.jv?" *":""}</span></div>
+          <div class="mi"><span class="k">2026 projected time</span><span class="v big">${fmt(r.projTime)}</span></div>
+        </div>
+        ${jvHtml}${racesHtml}
+      </div>
+    </li>`;
+  }).join("");
+
+  renderGraduated();
+  renderTeams();
+  renderLog();
+  fillRunnerSelects();
+}
+
+const TEAM_ABBR = {
+  "American Fork":"AF","Lone Peak":"LP","Riverton":"Riv","Westlake":"WL","Weber":"Web",
+  "Davis":"Dav","Skyridge":"Sky","Layton":"Lay","Lehi":"Lehi","Herriman":"Her",
+  "Syracuse":"Syr","Mountain Ridge":"MR","Corner Canyon":"CC","Cedar Valley":"CV","Copper Hills":"CH","Bingham":"Bing","Farmington":"Farm"
+};
+
+function renderGraduated(){
+  document.getElementById("gradCount").textContent = GRADUATED.length+" seniors";
+  document.getElementById("gradGrid").innerHTML = GRADUATED.map(g=>
+    `<div class="graditem"><span>${g.name} · ${TEAM_ABBR[g.team]||g.team}</span><span class="gp">${ordinal(g.p)} · ${fmtShort(g.t)}</span></div>`
+  ).join("");
+}
+
+/* ============================================================
+   RENDER — Teams
+   ============================================================ */
+const FILL_GAP = 20; // seconds added per projected position below a team's last returner
+
+/* Build the full projected scoring field: real returners + added runners +
+   projected JV fills so every team reaches five scorers. Places are ranked
+   across this complete field (that's what team scoring runs on). */
+function computeTeamField(){
+  const base = computeRunners();            // real returners + added (no phantoms)
+  const byTeam = {};
+  base.forEach(r=>{ (byTeam[r.team]=byTeam[r.team]||[]).push(r); });
+
+  const field = base.map(r=>({
+    id:r.id, name:r.name, team:r.team, projTime:r.projTime, phantom:false, added:r.added, isReturnerAdd:r.isReturnerAdd, jv:r.jv, grade26:r.grade26
+  }));
+
+  for(const tm in byTeam){
+    const rs = byTeam[tm].slice().sort((a,b)=>a.projTime-b.projTime);
+    const need = Math.max(0, 7 - rs.length);          // fill to a full 7-runner squad
+    const anchor = rs[rs.length-1].projTime;          // team's slowest returner
+    for(let i=1;i<=need;i++){
+      field.push({
+        id:tm+"_f"+i,
+        name:"Projected "+ordinal(rs.length+i)+" runner",
+        team:tm, phantom:true,
+        projTime: anchor + FILL_GAP*i
+      });
+    }
+  }
+  field.sort((a,b)=>a.projTime-b.projTime);
+  field.forEach((r,i)=> r.racePlace = i+1);
+  return field;
+}
+
+function renderTeams(){
+  const field = computeTeamField();
+  const byTeam = {};
+  field.forEach(r=>{ (byTeam[r.team]=byTeam[r.team]||[]).push(r); });
+
+  const rows = Object.keys(byTeam).map(tm=>{
+    const rs = byTeam[tm].sort((a,b)=>a.projTime-b.projTime);
+    const top5 = rs.slice(0,5);
+    const score = top5.reduce((a,r)=>a+r.racePlace,0);
+    const projInFive = top5.filter(r=>r.phantom).length;
+    const realCount = rs.filter(r=>!r.phantom).length;
+    return {tm, rs, score, projInFive, realCount};
+  });
+  rows.sort((a,b)=> a.score - b.score);
+
+  document.getElementById("teamStandings").innerHTML = rows.map((row,idx)=>
+    `<li class="${idx===0?'lead':''}">
+       <span class="rk">${ordinal(idx+1)}</span>
+       <span class="tm">${row.tm}</span>
+       <span class="pts">${row.score}<span class="star">${row.projInFive?" *":""}</span> <small>proj pts</small></span>
+     </li>`
+  ).join("");
+
+  document.getElementById("teamsWrap").innerHTML = rows.map((row,idx)=>{
+    const scorers = row.rs.map((r,i)=>{
+      const tag = r.phantom ? ' <span class="tag new">proj JV</span>'
+                : r.jv ? ' <span class="tag form">JV</span>'
+                : (r.added && !r.isReturnerAdd) ? ' <span class="tag new">new</span>' : '';
+      const cls = (r.phantom?"fill ":"") + (i>=5?"displacer":"");
+      const gr = (r.grade26 && r.grade26!=="?" && r.grade26!=="—") ? r.grade26 : "";
+      return `<div class="scorer ${cls}">
+        <span class="sp">${i+1}</span>
+        <span class="snm">${r.name}${tag}</span>
+        <span class="sgrade">${gr}</span>
+        <span class="stime">${fmt(r.projTime)}</span>
+        <span class="teampos" style="color:var(--muted);width:46px;text-align:right">${ordinal(r.racePlace)}</span>
+      </div>`;
+    }).join("");
+
+    const flag = row.projInFive
+      ? `<span class="flag short">${row.projInFive} projected JV in scoring 5</span>`
+      : `<span class="flag full">5 returning scorers</span>`;
+
+    return `<div class="teamcard">
+      <div class="teamhead">
+        <span class="tn">${ordinal(idx+1)} · ${row.tm}</span>
+        <span class="ts">${row.score} <small>proj pts${row.projInFive?" *":""}</small></span>
+      </div>
+      <div style="margin-bottom:6px">${flag}
+        <span style="font-size:12px;color:var(--muted)">${row.realCount} returning · top 5 score · 6–7 displace</span></div>
+      ${scorers}
+    </div>`;
+  }).join("");
+}
+
+/* ============================================================
+   RENDER — Log list + selects
+   ============================================================ */
+function fillRunnerSelects(){
+  // runner select (seeded + added), grouped
+  const sel=document.getElementById("logRunner");
+  const cur=sel.value;
+  const opts = [
+    ...RETURNERS.map(r=>({id:r.id,label:r.name+" — "+(TEAM_ABBR[r.team]||r.team)})),
+    ...STATE.added.map(a=>({id:a.id,label:a.name+" — "+(TEAM_ABBR[a.team]||a.team)+" (added)"}))
+  ].sort((a,b)=>a.label.localeCompare(b.label));
+  sel.innerHTML = opts.map(o=>`<option value="${o.id}">${o.label}</option>`).join("");
+  if(cur) sel.value=cur;
+
+  const teamOpts = CANON_TEAMS.slice().sort().map(t=>`<option value="${t}">${t}</option>`).join("");
+  const tsel=document.getElementById("newTeam");
+  if(!tsel.dataset.filled){ tsel.innerHTML = teamOpts; tsel.dataset.filled="1"; }
+  const psel=document.getElementById("pasteTeam");
+  if(!psel.dataset.filled){ psel.innerHTML = `<option value="">— detect from each line —</option>` + teamOpts; psel.dataset.filled="1"; }
+}
+function nameById(id){
+  const r=RETURNERS.find(x=>x.id===id); if(r) return r.name;
+  const a=STATE.added.find(x=>x.id===id); return a?a.name:id;
+}
+function renderLog(){
+  const items=[];
+  for(const id in STATE.races){
+    for(let i=0;i<STATE.races[id].length;i++){
+      const rc=STATE.races[id][i];
+      items.push({id,i,meet:rc.meet,t:rc.t});
+    }
+  }
+  const list=document.getElementById("logList");
+  if(!items.length){ list.innerHTML=`<div class="empty">No races logged yet. Add one above and watch the board move.</div>`; return; }
+  list.innerHTML = items.map(it=>
+    `<div class="logitem">
+       <div class="li-main"><b>${nameById(it.id)}</b><br><span style="color:var(--muted);font-size:12px">${it.meet||"race"}</span></div>
+       <div><span class="li-time">${fmt(it.t)}</span><button class="btn danger tiny" data-del="${it.id}|${it.i}">remove</button></div>
+     </div>`
+  ).join("");
+  list.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{
+    const [id,idx]=b.dataset.del.split("|");
+    STATE.races[id].splice(+idx,1);
+    if(!STATE.races[id].length) delete STATE.races[id];
+    saveState(); render(); toast("Result removed");
+  });
+}
+
+/* ============================================================
+   EVENTS
+   ============================================================ */
+function switchTab(pane){
+  document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected", t.dataset.pane===pane));
+  document.querySelectorAll(".pane").forEach(s=>s.classList.toggle("hidden", s.id!=="pane-"+pane));
+}
+document.querySelectorAll(".tab").forEach(t=> t.onclick=()=>switchTab(t.dataset.pane));
+
+// settings gear menu
+const gearBtn=document.getElementById("gearBtn");
+const settingsMenu=document.getElementById("settingsMenu");
+gearBtn.onclick=(e)=>{
+  e.stopPropagation();
+  const open=settingsMenu.hasAttribute("hidden");
+  if(open){ settingsMenu.removeAttribute("hidden"); gearBtn.setAttribute("aria-expanded","true"); }
+  else { settingsMenu.setAttribute("hidden",""); gearBtn.setAttribute("aria-expanded","false"); }
+};
+document.getElementById("pdfBtn").onclick=()=>{ settingsMenu.setAttribute("hidden",""); gearBtn.setAttribute("aria-expanded","false"); window.print(); };
+document.addEventListener("click",(e)=>{
+  if(!e.target.closest(".settings-wrap")){ settingsMenu.setAttribute("hidden",""); gearBtn.setAttribute("aria-expanded","false"); }
+});
+
+// expand / collapse a runner row
+document.getElementById("projList").addEventListener("click", e=>{
+  const head = e.target.closest(".rrow-head");
+  if(!head) return;
+  const row = head.closest(".rrow");
+  const id = row.dataset.id;
+  const nowOpen = !row.classList.contains("open");
+  row.classList.toggle("open", nowOpen);
+  head.setAttribute("aria-expanded", nowOpen?"true":"false");
+  if(nowOpen) expanded.add(id); else expanded.delete(id);
+});
+
+document.getElementById("logAdd").onclick = ()=>{
+  const id=document.getElementById("logRunner").value;
+  const meet=document.getElementById("logMeet").value.trim();
+  const t=parseTime(document.getElementById("logTime").value);
+  if(!id) return toast("Pick a runner");
+  if(t==null) return toast("Enter a time like 18:24");
+  (STATE.races[id]=STATE.races[id]||[]).push({meet,t});
+  document.getElementById("logMeet").value=""; document.getElementById("logTime").value="";
+  saveState(); render(); toast(nameById(id)+" updated");
+};
+document.getElementById("newAdd").onclick = ()=>{
+  const name=document.getElementById("newName").value.trim();
+  const team=document.getElementById("newTeam").value;
+  const grade25=document.getElementById("newGrade").value || null;
+  const placeRaw=document.getElementById("newPlace").value.trim();
+  const place25=placeRaw?parseInt(placeRaw,10):null;
+  const time25=parseTime(document.getElementById("newT25").value);
+  const entryTime=parseTime(document.getElementById("newTime").value);
+  if(!name) return toast("Add a name");
+  if(time25==null && entryTime==null) return toast("Give a 2025 time or a projected time");
+  const id="a"+Date.now();
+  STATE.added.push({id,name,team,grade25,place25,time25,entryTime});
+  ["newName","newPlace","newT25","newTime"].forEach(x=>document.getElementById(x).value="");
+  document.getElementById("newGrade").value="";
+  saveState(); render(); toast(name+" added");
+};
+document.getElementById("resetBtn").onclick = ()=>{
+  if(!confirm("Clear all logged races and added runners? Your baseline projections stay.")) return;
+  STATE.races={}; STATE.added=[]; saveState(); render(); toast("Inputs cleared");
+};
+
+/* ---- bulk paste importer ---- */
+let PARSED = [];
+document.getElementById("parseBtn").onclick = ()=>{
+  const text = document.getElementById("pasteBox").value;
+  const defTeam = document.getElementById("pasteTeam").value;
+  if(!text.trim()) return toast("Paste a results list first");
+  if(/^\s*https?:\/\/\S+\s*$/i.test(text)){
+    document.getElementById("parsePreview").innerHTML =
+      `<div class="pv-head">That's a link — I can't open it from here. Go to that page, select the runner rows, and paste the <b>text</b> instead (the stacked name/grade/team/time copy works).</div>`;
+    return;
+  }
+  const rows = parseResultsText(text, defTeam);
+  if(!rows.length){
+    document.getElementById("parsePreview").innerHTML =
+      `<div class="pv-head">Couldn't find any runners with times. Paste the results text (each line needs a name and a mm:ss time). A bare link won't work.</div>`;
+    return;
+  }
+  PARSED = rows.map((r,i)=>{
+    const dup = isDuplicate(r.name, r.team);
+    const grad = ALL_2025.some(x=>x.name.toLowerCase()===r.name.toLowerCase() && x.grade==="Sr");
+    const skip = dup || grad || !r.team;
+    let flag = "";
+    if(grad) flag="graduated"; else if(dup) flag="already in"; else if(!r.team) flag="no team";
+    return {...r, i, include: !skip, flag};
+  });
+  renderParsePreview();
+};
+function renderParsePreview(){
+  const keep = PARSED.filter(r=>r.include).length;
+  const head = `<div class="pv-head">Found <b>${PARSED.length}</b> runner${PARSED.length>1?"s":""}. ${keep} selected to add. Uncheck any you don't want, then add.</div>`;
+  const rows = PARSED.map(r=>{
+    const meta = [r.team||"(no team)", r.grade?r.grade:"grade —"].join(" · ");
+    return `<label class="pv-row ${r.include?"":"skip"}">
+      <input type="checkbox" data-i="${r.i}" ${r.include?"checked":""}>
+      <span class="pv-nm">${r.name}<div class="pv-meta">${meta}</div></span>
+      ${r.flag?`<span class="pv-flag">${r.flag}</span>`:""}
+      <span class="pv-time">${fmt(r.timeSec)}</span>
+    </label>`;
+  }).join("");
+  document.getElementById("parsePreview").innerHTML =
+    head + rows + `<button class="btn primary" id="pasteAdd" style="margin-top:8px">Add selected runners</button>`;
+  document.getElementById("parsePreview").querySelectorAll("input[type=checkbox]").forEach(cb=>{
+    cb.onchange = ()=>{ const r=PARSED.find(x=>x.i==cb.dataset.i); r.include=cb.checked; cb.closest(".pv-row").classList.toggle("skip",!cb.checked); };
+  });
+  document.getElementById("pasteAdd").onclick = ()=>{
+    const chosen = PARSED.filter(r=>r.include);
+    if(!chosen.length) return toast("Nothing selected");
+    chosen.forEach((r,k)=>{
+      STATE.added.push({
+        id:"a"+Date.now()+"_"+k,
+        name:r.name, team:r.team,
+        grade25: (r.grade && r.grade!=="Sr") ? r.grade : null,
+        place25: null,               // JV/region place isn't a state place
+        time25: r.timeSec,           // used for projection (course-approximate)
+        entryTime: null
+      });
+    });
+    PARSED=[];
+    document.getElementById("pasteBox").value="";
+    document.getElementById("parsePreview").innerHTML="";
+    saveState(); render(); toast(chosen.length+" runner"+(chosen.length>1?"s":"")+" added");
+  };
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+(function init(){
+  // Render the seeded projections immediately — never depends on storage/network.
+  try{
+    STATE.impr = 100;          // standard year-over-year improvement
+    STATE.projMode = "recent"; // logged 2026 races drive the projection
+    render();
+  }catch(e){ console.error("render failed", e); }
+  // Then load any saved inputs (phone: localStorage) and re-render if found.
+  (async function(){
+    try{
+      await loadState();
+      STATE.impr = 100; STATE.projMode = "recent";
+      render();
+    }catch(e){ /* keep the already-rendered seeded view */ }
+  })();
+})();
+</script>
+</body>
+</html>
