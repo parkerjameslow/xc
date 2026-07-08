@@ -375,11 +375,21 @@
   <!-- ============ UPDATE PANE ============ -->
   <section class="pane hidden update-view" id="pane-update">
     <div class="card">
-      <h3>Fill teams from a results list</h3>
-      <p class="hint">Open a JV or region result on SportTrax/Athletic.net, select the runners, and paste here — it reads the stacked format those sites copy (name, grade, [team], time, splits all on separate lines). Then hit Read list. A web <b>link</b> won't work: this file can't open a URL, and those pages need a live browser. If the list doesn't tag teams, pick a default team below.</p>
+      <h3>Paste a full meet's results</h3>
+      <p class="hint">Paste a whole race from SportTrax/Athletic.net (copy the <b>text</b>, not a link). Runners already in the app get that race <b>logged</b> — their projections update and the board re-ranks. Anyone new gets added. Set the course difficulty once and it applies to the whole field.</p>
       <div class="field">
-        <label for="pasteTeam">Default team (optional)</label>
-        <select id="pasteTeam"><option value="">— detect from each line —</option></select>
+        <label for="pasteMeet">Meet / date</label>
+        <input id="pasteMeet" placeholder="e.g. Twilight @ Art Dye — Sep 25">
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="pasteTeam">Default team (optional)</label>
+          <select id="pasteTeam"><option value="">— detect from each line —</option></select>
+        </div>
+        <div class="field">
+          <label for="pasteCourse">Course difficulty (whole race)</label>
+          <select id="pasteCourse"></select>
+        </div>
       </div>
       <div class="field">
         <label for="pasteBox">Paste results</label>
@@ -407,6 +417,10 @@
           <label for="logTime">Time</label>
           <input id="logTime" placeholder="mm:ss  e.g. 18:24">
         </div>
+      </div>
+      <div class="field">
+        <label for="logCourse">Course difficulty</label>
+        <select id="logCourse"></select>
       </div>
       <button class="btn primary" id="logAdd">Add result</button>
     </div>
@@ -789,6 +803,21 @@ function isDuplicate(name, team){
   if(STATE.added.some(a=>a.name.toLowerCase()===n)) return true;
   return false;
 }
+/* Resolve a pasted name to an existing runner id (returner, JV fill, or added). */
+function findRunnerId(name){
+  const n = name.toLowerCase();
+  const r = RETURNERS.find(x=>x.name.toLowerCase()===n);
+  if(r) return r.id;
+  const j = JV_FILLS.findIndex(x=>x.name.toLowerCase()===n);
+  if(j>=0) return "jv"+j;
+  const a = STATE.added.find(x=>x.name.toLowerCase()===n);
+  if(a) return a.id;
+  return null;
+}
+function isGraduated(name){
+  const n = name.toLowerCase();
+  return ALL_2025.some(r=>r.name.toLowerCase()===n && r.grade==="Sr");
+}
 function toast(msg){
   const t=document.getElementById("toast");
   t.textContent=msg; t.classList.add("show");
@@ -871,15 +900,31 @@ function computeRunners(){
   }
   return list;
 }
+/* Course factor: seconds this course ADDS vs a neutral course.
+   Hard course = positive. Neutral-equivalent time = raw - cf. ±10s per step. */
+const COURSE_OPTS = [
+  {v:-20, label:"Very fast course (−20s)"},
+  {v:-10, label:"Fast course (−10s)"},
+  {v:0,   label:"Neutral course (baseline)"},
+  {v:10,  label:"Hard course (+10s)"},
+  {v:20,  label:"Very hard course (+20s)"},
+];
+function courseLabel(cf){
+  const o = COURSE_OPTS.find(o=>o.v===(cf||0));
+  return o ? o.label.replace(/\s*\(.*\)$/,"") : "Neutral course";
+}
+// a race's time normalized to a neutral course
+function normT(r){ return r.t - (r.cf||0); }
+
 function projectFromRaces(races, mode){
-  const times = races.map(x=>x.t);
+  const times = races.map(normT);
   if(mode==="best") return Math.min(...times);
   if(mode==="avg")  return times.reduce((a,b)=>a+b,0)/times.length;
   // recent: recency-weighted average of last up to 3 (newest highest weight)
-  const last = races.slice(-3);
+  const last = races.slice(-3).map(normT);
   const weights = last.map((_,i)=> i+1); // oldest=1 ... newest=n
   const sw = weights.reduce((a,b)=>a+b,0);
-  return last.reduce((acc,r,i)=> acc + r.t*weights[i], 0)/sw;
+  return last.reduce((acc,t,i)=> acc + t*weights[i], 0)/sw;
 }
 
 /* ============================================================
@@ -924,7 +969,11 @@ function render(){
 
     const racesHtml = r.races && r.races.length
       ? `<div class="rrraces"><div class="k">2026 races logged</div>${
-          r.races.map(rc=>`<div class="rc"><span>${rc.meet||"race"}</span><span class="rt">${fmt(rc.t)}</span></div>`).join("")
+          r.races.map(rc=>{
+            const adj = (rc.cf||0)!==0 ? ` <span style="color:var(--muted);font-weight:500">→ ${fmt(normT(rc))} adj</span>` : "";
+            const note = (rc.cf||0)!==0 ? `<div style="font-size:11px;color:var(--muted-2)">${courseLabel(rc.cf)}</div>` : "";
+            return `<div class="rc"><span>${rc.meet||"race"}${note}</span><span class="rt">${fmt(rc.t)}${adj}</span></div>`;
+          }).join("")
         }</div>`
       : "";
 
@@ -1089,6 +1138,11 @@ function fillRunnerSelects(){
   if(!tsel.dataset.filled){ tsel.innerHTML = teamOpts; tsel.dataset.filled="1"; }
   const psel=document.getElementById("pasteTeam");
   if(!psel.dataset.filled){ psel.innerHTML = `<option value="">— detect from each line —</option>` + teamOpts; psel.dataset.filled="1"; }
+  const courseOpts = COURSE_OPTS.map(o=>`<option value="${o.v}"${o.v===0?" selected":""}>${o.label}</option>`).join("");
+  ["logCourse","pasteCourse"].forEach(id=>{
+    const s=document.getElementById(id);
+    if(s && !s.dataset.filled){ s.innerHTML = courseOpts; s.dataset.filled="1"; }
+  });
 }
 function nameById(id){
   const r=RETURNERS.find(x=>x.id===id); if(r) return r.name;
@@ -1099,14 +1153,14 @@ function renderLog(){
   for(const id in STATE.races){
     for(let i=0;i<STATE.races[id].length;i++){
       const rc=STATE.races[id][i];
-      items.push({id,i,meet:rc.meet,t:rc.t});
+      items.push({id,i,meet:rc.meet,t:rc.t,cf:rc.cf||0});
     }
   }
   const list=document.getElementById("logList");
   if(!items.length){ list.innerHTML=`<div class="empty">No races logged yet. Add one above and watch the board move.</div>`; return; }
   list.innerHTML = items.map(it=>
     `<div class="logitem">
-       <div class="li-main"><b>${nameById(it.id)}</b><br><span style="color:var(--muted);font-size:12px">${it.meet||"race"}</span></div>
+       <div class="li-main"><b>${nameById(it.id)}</b><br><span style="color:var(--muted);font-size:12px">${it.meet||"race"}${it.cf?" · "+courseLabel(it.cf):""}</span></div>
        <div><span class="li-time">${fmt(it.t)}</span><button class="btn danger tiny" data-del="${it.id}|${it.i}">remove</button></div>
      </div>`
   ).join("");
@@ -1162,9 +1216,10 @@ document.getElementById("logAdd").onclick = ()=>{
   const id=document.getElementById("logRunner").value;
   const meet=document.getElementById("logMeet").value.trim();
   const t=parseTime(document.getElementById("logTime").value);
+  const cf=parseInt(document.getElementById("logCourse").value,10)||0;
   if(!id) return toast("Pick a runner");
   if(t==null) return toast("Enter a time like 18:24");
-  (STATE.races[id]=STATE.races[id]||[]).push({meet,t});
+  (STATE.races[id]=STATE.races[id]||[]).push({meet,t,cf});
   document.getElementById("logMeet").value=""; document.getElementById("logTime").value="";
   saveState(); render(); toast(nameById(id)+" updated");
 };
@@ -1207,49 +1262,58 @@ document.getElementById("parseBtn").onclick = ()=>{
     return;
   }
   PARSED = rows.map((r,i)=>{
-    const dup = isDuplicate(r.name, r.team);
-    const grad = ALL_2025.some(x=>x.name.toLowerCase()===r.name.toLowerCase() && x.grade==="Sr");
-    const skip = dup || grad || !r.team;
-    let flag = "";
-    if(grad) flag="graduated"; else if(dup) flag="already in"; else if(!r.team) flag="no team";
-    return {...r, i, include: !skip, flag};
+    const id = findRunnerId(r.name);
+    const grad = isGraduated(r.name);
+    let action, flag;
+    if(grad){ action="skip"; flag="graduated"; }
+    else if(id){ action="log";  flag="log race"; }
+    else if(!r.team){ action="skip"; flag="no team"; }
+    else { action="add"; flag="new runner"; }
+    return {...r, i, id, action, flag, include: action!=="skip"};
   });
   renderParsePreview();
 };
 function renderParsePreview(){
-  const keep = PARSED.filter(r=>r.include).length;
-  const head = `<div class="pv-head">Found <b>${PARSED.length}</b> runner${PARSED.length>1?"s":""}. ${keep} selected to add. Uncheck any you don't want, then add.</div>`;
+  const logs = PARSED.filter(r=>r.include && r.action==="log").length;
+  const adds = PARSED.filter(r=>r.include && r.action==="add").length;
+  const head = `<div class="pv-head">Found <b>${PARSED.length}</b> runner${PARSED.length>1?"s":""} — <b>${logs}</b> race result${logs===1?"":"s"} to log, <b>${adds}</b> new runner${adds===1?"":"s"} to add. Uncheck any you don't want.</div>`;
   const rows = PARSED.map(r=>{
     const meta = [r.team||"(no team)", r.grade?r.grade:"grade —"].join(" · ");
     return `<label class="pv-row ${r.include?"":"skip"}">
-      <input type="checkbox" data-i="${r.i}" ${r.include?"checked":""}>
+      <input type="checkbox" data-i="${r.i}" ${r.include?"checked":""} ${r.action==="skip"?"disabled":""}>
       <span class="pv-nm">${r.name}<div class="pv-meta">${meta}</div></span>
       ${r.flag?`<span class="pv-flag">${r.flag}</span>`:""}
       <span class="pv-time">${fmt(r.timeSec)}</span>
     </label>`;
   }).join("");
   document.getElementById("parsePreview").innerHTML =
-    head + rows + `<button class="btn primary" id="pasteAdd" style="margin-top:8px">Add selected runners</button>`;
+    head + rows + `<button class="btn primary" id="pasteAdd" style="margin-top:8px">Apply to projections</button>`;
   document.getElementById("parsePreview").querySelectorAll("input[type=checkbox]").forEach(cb=>{
     cb.onchange = ()=>{ const r=PARSED.find(x=>x.i==cb.dataset.i); r.include=cb.checked; cb.closest(".pv-row").classList.toggle("skip",!cb.checked); };
   });
   document.getElementById("pasteAdd").onclick = ()=>{
-    const chosen = PARSED.filter(r=>r.include);
+    const chosen = PARSED.filter(r=>r.include && r.action!=="skip");
     if(!chosen.length) return toast("Nothing selected");
+    const cf = parseInt(document.getElementById("pasteCourse").value,10)||0;
+    const meet = (document.getElementById("pasteMeet").value||"").trim() || "2026 race";
+    let logged=0, added=0;
     chosen.forEach((r,k)=>{
-      STATE.added.push({
-        id:"a"+Date.now()+"_"+k,
-        name:r.name, team:r.team,
-        grade25: (r.grade && r.grade!=="Sr") ? r.grade : null,
-        place25: null,               // JV/region place isn't a state place
-        time25: r.timeSec,           // used for projection (course-approximate)
-        entryTime: null
-      });
+      if(r.action==="log"){
+        (STATE.races[r.id]=STATE.races[r.id]||[]).push({meet, t:r.timeSec, cf});
+        logged++;
+      } else {
+        const id="a"+Date.now()+"_"+k;
+        STATE.added.push({id, name:r.name, team:r.team, grade25:(r.grade&&r.grade!=="Sr")?r.grade:null, place25:null, time25:null, entryTime:r.timeSec});
+        (STATE.races[id]=STATE.races[id]||[]).push({meet, t:r.timeSec, cf});
+        added++;
+      }
     });
     PARSED=[];
     document.getElementById("pasteBox").value="";
+    document.getElementById("pasteMeet").value="";
     document.getElementById("parsePreview").innerHTML="";
-    saveState(); render(); toast(chosen.length+" runner"+(chosen.length>1?"s":"")+" added");
+    saveState(); render();
+    toast(`${logged} logged${added?", "+added+" added":""}`);
   };
 }
 
