@@ -177,6 +177,9 @@
   .pv-row .pv-meta{font-size:12px;color:var(--muted)}
   .pv-row .pv-time{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-variant-numeric:tabular-nums;font-size:15px}
   .pv-row .pv-flag{font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--amber)}
+  .demote-opt{display:flex;align-items:center;gap:8px;margin-top:11px;font-size:13px;color:var(--ink);cursor:pointer;line-height:1.4}
+  .demote-opt input{width:17px;height:17px;accent-color:var(--lane);flex:none}
+  .demote-hint{color:var(--muted);font-size:12px}
   .field input:focus,.field select:focus{outline:2px solid var(--lane);outline-offset:0;border-color:transparent}
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
   .btn{font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:15px;border:none;border-radius:9px;padding:11px 16px;cursor:pointer}
@@ -398,6 +401,7 @@
 12  Ruby Nelson  9  [Lehi]  21:05.90"></textarea>
       </div>
       <button class="btn primary" id="parseBtn">Read list</button>
+      <label class="demote-opt"><input type="checkbox" id="pasteDemote" checked> Demote returners who miss this race's top 7 <span class="demote-hint">(gradual — for full-field meets)</span></label>
       <div id="parsePreview"></div>
     </div>
 
@@ -673,7 +677,7 @@ const JV_FILLS = [
 /* ============================================================
    STATE (persisted)
    ============================================================ */
-let STATE = { races:{}, added:[], projMode:"recent", impr:100 };
+let STATE = { races:{}, added:[], misses:{}, projMode:"recent", impr:100 };
 const expanded = new Set();   // ids of open race-result rows
 const KEY = "xc6a_state_v1";
 let storageOK = true;
@@ -886,6 +890,13 @@ function computeRunners(){
     });
   }
 
+  // gradual "missed the top 7" penalty: each miss nudges a runner's projection slower
+  list.forEach(r=>{
+    const m = (STATE.misses && STATE.misses[r.id]) || 0;
+    r.misses = m;
+    if(m) r.projTime += m * MISS_STEP;
+  });
+
   // rank by projected time
   list.sort((x,y)=> x.projTime - y.projTime);
   list.forEach((r,i)=> r.projPlace = i+1);
@@ -915,13 +926,22 @@ function courseLabel(cf){
 }
 // a race's time normalized to a neutral course
 function normT(r){ return r.t - (r.cf||0); }
+const MISS_STEP = 8;  // seconds added to a runner's projection per meet she misses her team's top 7
 
 function projectFromRaces(races, mode){
-  const times = races.map(normT);
+  // Drop-worst: with 3+ races, throw out the single slowest (course-adjusted) so a fluke
+  // blow-up doesn't drag the projection. Keeps chronological order for recency weighting.
+  let used = races;
+  if(races.length >= 3){
+    let wi = 0, wv = -Infinity;
+    races.forEach((r,i)=>{ const t = normT(r); if(t > wv){ wv = t; wi = i; } });
+    used = races.filter((_,i)=> i !== wi);
+  }
+  const times = used.map(normT);
   if(mode==="best") return Math.min(...times);
   if(mode==="avg")  return times.reduce((a,b)=>a+b,0)/times.length;
-  // recent: recency-weighted average of last up to 3 (newest highest weight)
-  const last = races.slice(-3).map(normT);
+  // recent: recency-weighted average of last up to 3 remaining (newest highest weight)
+  const last = times.slice(-3);
   const weights = last.map((_,i)=> i+1); // oldest=1 ... newest=n
   const sw = weights.reduce((a,b)=>a+b,0);
   return last.reduce((acc,t,i)=> acc + t*weights[i], 0)/sw;
@@ -981,6 +1001,10 @@ function render(){
       ? `<div class="rrraces"><div class="k">JV call-up — 2025 mark</div><div class="rc"><span>${r.jvSrc||"invitational"}</span><span class="rt" style="color:var(--muted)">other course</span></div></div>`
       : "";
 
+    const missHtml = (r.misses>0)
+      ? `<div class="rrraces"><div class="k">Form adjustment</div><div class="rc"><span>Missed team top 7 · ${r.misses} race${r.misses>1?"s":""}</span><span class="rt" style="color:var(--chute)">+${r.misses*MISS_STEP}s</span></div></div>`
+      : "";
+
     return `<li class="rrow ${podium} ${open}" data-id="${r.id}">
       <button class="rrow-head" aria-expanded="${open?"true":"false"}">
         <span class="bib">${r.projPlace}</span>
@@ -996,7 +1020,7 @@ function render(){
           <div class="mi"><span class="k">Last year time</span><span class="v">${r.time25?fmt(r.time25):"—"}${r.jv?" *":""}</span></div>
           <div class="mi"><span class="k">2026 projected time</span><span class="v big">${fmt(r.projTime)}</span></div>
         </div>
-        ${jvHtml}${racesHtml}
+        ${jvHtml}${missHtml}${racesHtml}
       </div>
     </li>`;
   }).join("");
@@ -1241,7 +1265,7 @@ document.getElementById("newAdd").onclick = ()=>{
 };
 document.getElementById("resetBtn").onclick = ()=>{
   if(!confirm("Clear all logged races and added runners? Your baseline projections stay.")) return;
-  STATE.races={}; STATE.added=[]; saveState(); render(); toast("Inputs cleared");
+  STATE.races={}; STATE.added=[]; STATE.misses={}; saveState(); render(); toast("Inputs cleared");
 };
 
 /* ---- bulk paste importer ---- */
@@ -1296,18 +1320,32 @@ function renderParsePreview(){
     if(!chosen.length) return toast("Nothing selected");
     const cf = parseInt(document.getElementById("pasteCourse").value,10)||0;
     const meet = (document.getElementById("pasteMeet").value||"").trim() || "2026 race";
+    const demote = document.getElementById("pasteDemote").checked;
+
     let logged=0, added=0;
+    const racedByTeam = {};   // team -> [{id, t}] of everyone who raced in this import
     chosen.forEach((r,k)=>{
-      if(r.action==="log"){
-        (STATE.races[r.id]=STATE.races[r.id]||[]).push({meet, t:r.timeSec, cf});
-        logged++;
-      } else {
-        const id="a"+Date.now()+"_"+k;
-        STATE.added.push({id, name:r.name, team:r.team, grade25:(r.grade&&r.grade!=="Sr")?r.grade:null, place25:null, time25:null, entryTime:r.timeSec});
-        (STATE.races[id]=STATE.races[id]||[]).push({meet, t:r.timeSec, cf});
-        added++;
-      }
+      let id;
+      if(r.action==="log"){ id=r.id; (STATE.races[id]=STATE.races[id]||[]).push({meet, t:r.timeSec, cf}); logged++; }
+      else { id="a"+Date.now()+"_"+k; STATE.added.push({id, name:r.name, team:r.team, grade25:(r.grade&&r.grade!=="Sr")?r.grade:null, place25:null, time25:null, entryTime:r.timeSec}); (STATE.races[id]=STATE.races[id]||[]).push({meet, t:r.timeSec, cf}); added++; }
+      if(r.team){ (racedByTeam[r.team]=racedByTeam[r.team]||[]).push({id, t:r.timeSec}); }
     });
+
+    // Missed-top-7 penalty: for each team that raced, demote projected-top-7 runners who weren't in this meet's top 7.
+    if(demote){
+      const field = computeRunners();               // current projection (with the new times folded in)
+      const projByTeam = {};
+      field.forEach(r=>{ (projByTeam[r.team]=projByTeam[r.team]||[]).push(r); });
+      Object.values(projByTeam).forEach(a=>a.sort((x,y)=>x.projTime-y.projTime));
+      for(const tm in racedByTeam){
+        const meetTop7 = new Set(racedByTeam[tm].slice().sort((a,b)=>a.t-b.t).slice(0,7).map(x=>x.id));
+        meetTop7.forEach(id=>{ STATE.misses[id]=0; });   // showed up -> reset
+        (projByTeam[tm]||[]).slice(0,7).forEach(r=>{
+          if(!meetTop7.has(r.id)){ STATE.misses[r.id]=(STATE.misses[r.id]||0)+1; }  // projected top 7 but missed
+        });
+      }
+    }
+
     PARSED=[];
     document.getElementById("pasteBox").value="";
     document.getElementById("pasteMeet").value="";
