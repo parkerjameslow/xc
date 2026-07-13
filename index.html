@@ -402,6 +402,8 @@
     <div class="settings-backdrop" id="settingsBackdrop" hidden></div>
     <div class="settings-menu" id="settingsMenu" hidden role="menu">
       <button class="menu-item" id="pdfBtn" role="menuitem">⤓&nbsp; Save / Share PDF</button>
+      <button class="menu-item" id="syncOut" role="menuitem">↗&nbsp; Copy sync code</button>
+      <button class="menu-item" id="syncIn" role="menuitem">↙&nbsp; Paste sync code</button>
       <button class="menu-item" id="refreshBtn2" role="menuitem">↻&nbsp; Refresh for updates</button>
     </div>
   </div>
@@ -1450,6 +1452,14 @@ function meetTitleBits(m){
 // scale a 3-mile projection to another distance (pace-linear)
 function scaleDist(t3, miles){ return t3 * (miles / BASE_MILES); }
 
+/* Meets baked into the file — these ship with the app, so they appear on EVERY
+   device (phone, laptop) automatically. Locally-created meets are stored per-device
+   and can be moved with the sync code in Settings. */
+const SEED_MEETS = {
+  girls: [],
+  boys:  []
+};
+
 let MEET_VIEW = null;     // open meet id
 let RACE_VIEW = null;     // open race id within the meet
 let RACE_TAB  = "indiv";
@@ -1501,8 +1511,14 @@ function raceProjection(meet, race){
   return {field, teams};
 }
 
+function allMeets(){
+  const seeded = (SEED_MEETS[GENDER]||[]).map(m=>normMeet({...m, seeded:true}));
+  const local  = (STATE.meets||[]).map(normMeet);
+  const ids = new Set(seeded.map(m=>m.id));
+  return seeded.concat(local.filter(m=>!ids.has(m.id)));
+}
 function renderMeets(){
-  const meets=(STATE.meets||[]).map(normMeet);
+  const meets=allMeets();
   document.getElementById("meetCount").textContent = meets.length ? meets.length+" scheduled" : "";
   document.getElementById("meetsEmpty").hidden = meets.length>0;
   const sorted = meets.slice().sort((a,b)=> (a.date||"9999").localeCompare(b.date||"9999"));
@@ -1514,7 +1530,7 @@ function renderMeets(){
     return `<button class="meetcard" data-meet="${m.id}">
       <span class="mc-date"><b>${dstr}</b><small>${dow}</small></span>
       <span class="mc-main">
-        <span class="mc-name">${m.name||"Untitled meet"}</span>
+        <span class="mc-name">${m.name||"Untitled meet"}${m.seeded?` <span class="mc-chip">on all devices</span>`:""}</span>
         <span class="mc-meta">${m.teams.length} team${m.teams.length!==1?"s":""} · ${rn} race${rn!==1?"s":""}${rn?" · "+m.races.map(r=>raceName(r)).slice(0,3).join(", ")+(rn>3?"…":""):""}</span>
       </span>
       <span class="mc-go">›</span>
@@ -1524,8 +1540,20 @@ function renderMeets(){
     b.onclick=()=>{ MEET_VIEW=b.dataset.meet; const m=curMeet(); RACE_VIEW=(m.races[0]||{}).id||null; RACE_TAB="indiv"; renderMeetDetail(); };
   });
 }
-function curMeet(){ return (STATE.meets||[]).map(normMeet).find(m=>m.id===MEET_VIEW); }
+function curMeet(){ return allMeets().find(m=>m.id===MEET_VIEW); }
 
+/* Seeded meets live in the file (read-only source). The moment you edit one,
+   copy it into local state so the change sticks on this device. */
+function editableMeet(){
+  const m = curMeet();
+  if(!m) return null;
+  if(!m.seeded) return m;
+  const copy = JSON.parse(JSON.stringify(m));
+  delete copy.seeded;
+  STATE.meets = (STATE.meets||[]).filter(x=>x.id!==copy.id);
+  STATE.meets.push(copy);
+  return copy;
+}
 function showMeetView(which){
   document.getElementById("meetsList").hidden  = which!=="list";
   document.getElementById("meetForm").hidden   = which!=="meetform";
@@ -1594,7 +1622,7 @@ function renderMeetDetail(){
   document.getElementById("rEdit").onclick=()=>{ RACE_EDIT=race.id; openRaceForm(race); };
   document.getElementById("rDel").onclick=()=>{
     if(!confirm("Remove this race from the meet?")) return;
-    m.races=m.races.filter(r=>r.id!==race.id); RACE_VIEW=null; saveState(); renderMeets(); renderMeetDetail(); toast("Race removed");
+    const em=editableMeet(); em.races=em.races.filter(r=>r.id!==race.id); RACE_VIEW=null; saveState(); renderMeets(); renderMeetDetail(); toast("Race removed");
   };
 }
 
@@ -1927,8 +1955,9 @@ document.getElementById("mSave").onclick = ()=>{
   const teams=[...document.querySelectorAll("#mTeams input:checked")].map(cb=>cb.value);
   if(!name) return toast("Give the meet a name");
   if(!teams.length) return toast("Pick at least one team");
-  const existing=curMeet();
-  if(existing && document.getElementById("mFormTitle").textContent==="Edit meet"){
+  const editing = document.getElementById("mFormTitle").textContent==="Edit meet";
+  const existing = editing ? editableMeet() : null;
+  if(existing){
     existing.name=name; existing.date=date; existing.teams=teams;
     saveState(); renderMeets(); renderMeetDetail(); toast("Meet updated");
   } else {
@@ -1938,7 +1967,7 @@ document.getElementById("mSave").onclick = ()=>{
   }
 };
 document.getElementById("rSave").onclick = ()=>{
-  const m=curMeet(); if(!m) return;
+  const m=editableMeet(); if(!m) return;
   const r={
     id: RACE_EDIT || ("r"+Date.now()),
     name: document.getElementById("rName").value.trim(),
@@ -1966,6 +1995,30 @@ function openMenu(open){
 gearBtn.onclick=(e)=>{ e.stopPropagation(); openMenu(settingsMenu.hasAttribute("hidden")); };
 settingsBackdrop.onclick=()=>openMenu(false);
 document.getElementById("pdfBtn").onclick=()=>{ openMenu(false); window.print(); };
+// ---- sync code: move locally-created meets/races between devices ----
+document.getElementById("syncOut").onclick = async ()=>{
+  openMenu(false);
+  try{
+    const payload = btoa(unescape(encodeURIComponent(JSON.stringify({v:2, allstate:ALLSTATE}))));
+    if(navigator.clipboard && navigator.clipboard.writeText){ await navigator.clipboard.writeText(payload); toast("Sync code copied — paste it on your other device"); }
+    else { window.prompt("Copy this sync code, then paste it on your other device:", payload); }
+  }catch(e){ toast("Couldn't create sync code"); }
+};
+document.getElementById("syncIn").onclick = ()=>{
+  openMenu(false);
+  const code = window.prompt("Paste the sync code from your other device:");
+  if(!code) return;
+  try{
+    const o = JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
+    if(!o || !o.allstate) throw new Error("bad code");
+    ALLSTATE = o.allstate;
+    ["girls","boys"].forEach(g=>{ ALLSTATE[g]=Object.assign({races:{},added:[],misses:{},meets:[],projMode:"recent",impr:100}, ALLSTATE[g]||{}); if(!Array.isArray(ALLSTATE[g].meets)) ALLSTATE[g].meets=[]; });
+    STATE = ALLSTATE[GENDER];
+    MEET_VIEW=null; RACE_VIEW=null;
+    saveState(); render(); showMeetView("list");
+    toast("Synced — your meets and races are here");
+  }catch(e){ toast("That code didn't look right"); }
+};
 // refresh: reload fresh from the server so newly committed changes appear
 function hardRefresh(){ location.href = location.pathname + "?r=" + Date.now(); }
 document.getElementById("refreshBtn").onclick = hardRefresh;
