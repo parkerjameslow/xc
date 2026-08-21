@@ -1115,6 +1115,16 @@ async function loadState(){
     if(v){ const o=JSON.parse(v); if(o && o.allstate){ ALLSTATE=o.allstate; if(o.gender) GENDER=o.gender; } }
   }catch(e){ /* first run / no storage: keep defaults */ }
   ["girls","boys"].forEach(g=>{ ALLSTATE[g]=Object.assign({races:{},added:[],misses:{},meets:[],projMode:"recent",impr:100}, ALLSTATE[g]||{}); if(!Array.isArray(ALLSTATE[g].meets)) ALLSTATE[g].meets=[]; });
+  // Guard: remove any previously-added runners from non-6A schools (e.g. a 5A team
+  // pasted from a shared region meet). Only the 17 6A programs belong in the field.
+  const SIXA = new Set(["American Fork","Lone Peak","Riverton","Westlake","Weber","Davis","Skyridge","Layton","Lehi","Herriman","Syracuse","Mountain Ridge","Corner Canyon","Cedar Valley","Copper Hills","Bingham","Farmington"]);
+  ["girls","boys"].forEach(g=>{
+    const st=ALLSTATE[g];
+    if(Array.isArray(st.added)){
+      const drop=st.added.filter(a=>!SIXA.has(a.team)).map(a=>a.id);
+      if(drop.length){ st.added=st.added.filter(a=>SIXA.has(a.team)); drop.forEach(id=>{ if(st.races) delete st.races[id]; }); }
+    }
+  });
   STATE = ALLSTATE[GENDER];
 }
 async function saveState(){
@@ -2091,10 +2101,12 @@ document.getElementById("parseBtn").onclick = ()=>{
   PARSED = rows.map((r,i)=>{
     const id = findRunnerId(r.name);
     const grad = isGraduated(r.name);
+    const is6A = r.team && CANON_TEAMS.includes(r.team);
     let action, flag;
     if(grad){ action="skip"; flag="graduated"; }
-    else if(id){ action="log";  flag="log race"; }
+    else if(id){ action="log";  flag="log race"; }       // already in app = already 6A
     else if(!r.team){ action="skip"; flag="no team"; }
+    else if(!is6A){ action="skip"; flag="not 6A"; }       // other-classification school — never add
     else { action="add"; flag="new runner"; }
     return {...r, i, id, action, flag, include: action!=="skip"};
   });
