@@ -154,6 +154,9 @@
   .delta.down{background:var(--chute-dim);color:var(--chute)}
   .delta.same{background:var(--mist-2);color:var(--muted)}
   .delta.newp{background:var(--amber-dim);color:var(--amber)}
+  .deltawrap{display:inline-flex;align-items:center;gap:5px}
+  .logcount{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;border-radius:100px;background:var(--lane);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;line-height:1}
+  body.theme-boys .logcount{background:#1B1B1B}
   .was{font-size:11px;color:var(--muted-2);display:block;margin-top:2px;font-variant-numeric:tabular-nums}
   .teampos{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:14px;color:var(--ink-soft)}
 
@@ -1712,6 +1715,8 @@ function render(){
       else if(d<0) chip = `<span class="delta down">▼ ${-d}</span>`;
       else chip = `<span class="delta same">— 0</span>`;
     }
+    const nlog = (r.races && r.races.length) || 0;
+    const logCount = nlog ? `<span class="logcount" title="${nlog} 2026 result${nlog!==1?"s":""} logged">${nlog}</span>` : "";
     let btag = "";
     if(r.basis==="form") btag = `<span class="tag form">2026</span>`;
     else if(r.jv) btag = `<span class="tag new">JV</span>`;
@@ -1746,7 +1751,7 @@ function render(){
       <button class="rrow-head" aria-expanded="${open?"true":"false"}">
         <span class="bib ${r.team==="American Fork"?"af":""}">${r.projPlace}</span>
         <span class="rrow-name"><span class="nm"><span class="nmtxt">${r.name}${btag}</span><span class="tbox" style="background:${teamColor(r.team)}">${r.teamPos}</span></span><span class="sub">${sub}</span></span>
-        ${chip}
+        <span class="deltawrap">${chip}${logCount}</span>
         <span class="rrow-time">${fmt(r.projTime)}</span>
         <span class="chev">▸</span>
       </button>
