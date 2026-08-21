@@ -1156,6 +1156,35 @@ async function loadState(){
   });
   STATE = ALLSTATE[GENDER];
 }
+/* Remove any ADDED runner that duplicates a real base runner (returner/JV/depth) —
+   e.g. a paste that re-added Kurt Perry as a new "Riverton HS" entry. Their logged
+   races move onto the real runner so nothing is lost. Runs for both genders. */
+function baseRunnersFor(g){
+  const A=(g==="boys")?BOYS_ALL:GIRLS_ALL, FILLS=(g==="boys")?BOYS_FILLS:GIRLS_FILLS, DEP=(g==="boys")?BOYS_DEPTH:GIRLS_DEPTH;
+  const out=[];
+  A.filter(r=>r.grade!=="Sr").forEach(r=>out.push({id:"r"+r.p, name:r.name, team:r.team}));
+  FILLS.forEach((f,i)=>out.push({id:"jv"+i, name:f.name, team:f.team}));
+  DEP.forEach((f,i)=>out.push({id:"dp"+i, name:f.name, team:f.team}));
+  return out;
+}
+function dedupAdded(g){
+  const st=ALLSTATE[g]; if(!st || !Array.isArray(st.added)) return;
+  const base=baseRunnersFor(g);
+  st.races=st.races||{};
+  st.added = st.added.filter(a=>{
+    const n=normName(stripTeamFromName(a.name)), tt=normalizeTeam(a.team||"");
+    const named=base.filter(r=>normName(r.name)===n);
+    const hit = (tt && named.find(r=>normalizeTeam(r.team)===tt)) || (named.length===1?named[0]:null);
+    if(hit){
+      if(st.races[a.id] && st.races[a.id].length){ (st.races[hit.id]=st.races[hit.id]||[]).push(...st.races[a.id]); }
+      delete st.races[a.id];
+      return false;                        // drop the duplicate
+    }
+    return true;
+  });
+  // tidy any survivor whose name still carries school text, and normalize its team
+  st.added.forEach(a=>{ a.name = stripTeamFromName(a.name); const nt=normalizeTeam(a.team||""); if(nt) a.team=nt; });
+}
 async function saveState(){
   try{
     const payload = JSON.stringify({allstate:ALLSTATE, gender:GENDER});
@@ -1221,8 +1250,10 @@ function parseStacked(lines, defaultTeam){
   const out=[];
   let parts=[], grade=null, team=null;
   const flush=(timeSec)=>{
-    const name = parts.join(" ").replace(/\s{2,}/g," ").trim();
-    if(name) out.push({name, team: team||defaultTeam||"", grade, timeSec});
+    let name = parts.join(" ").replace(/\s{2,}/g," ").trim();
+    let tm = team || detectTeam(name) || defaultTeam || "";
+    name = stripTeamFromName(name);
+    if(name) out.push({name, team: tm, grade, timeSec});
     parts=[]; grade=null; team=null;
   };
   for(const l of lines){
@@ -1259,31 +1290,60 @@ function parseInline(lines, defaultTeam){
     else { const gW = body.match(/\b(Fr|So|Jr|Sr)\b/i); if(gW && !/^(SR|PR)$/i.test(gW[1])) grade = gW[1][0].toUpperCase()+gW[1][1].toLowerCase(); }
     let name = line.replace(/^\s*\d+[\.\)]?\s+/,"").replace(/\[[^\]]*\]/,"").replace(/\b(Fr|So|Jr|Sr)\b/i,"").replace(timeM[0],"").replace(/\b(9|10|11|12)\b/,"").replace(/\bPR\b|\bSR\b/g,"").replace(/\d+/g,"").replace(/[•|]/g," ").replace(/\s{2,}/g," ").trim();
     if(!name) continue;
+    name = stripTeamFromName(name);
+    if(!name) continue;
     out.push({name, team, grade, timeSec});
   }
   return out;
 }
-function isDuplicate(name, team){
-  const n = name.toLowerCase();
-  if(RETURNERS.some(r=>r.name.toLowerCase()===n)) return true;
-  if(ALL_2025.some(r=>r.name.toLowerCase()===n && r.grade==="Sr")) return true; // graduated
-  if(STATE.added.some(a=>a.name.toLowerCase()===n)) return true;
-  return false;
+function normName(s){
+  return (s||"").toLowerCase()
+    .replace(/\b(hs|high school|jr|sr high)\b/g," ")
+    .replace(/[.,'’]/g,"")
+    .replace(/\s{2,}/g," ").trim();
 }
-/* Resolve a pasted name to an existing runner id (returner, JV fill, or added). */
-function findRunnerId(name){
-  const n = name.toLowerCase();
-  const r = RETURNERS.find(x=>x.name.toLowerCase()===n);
-  if(r) return r.id;
-  const j = JV_FILLS.findIndex(x=>x.name.toLowerCase()===n);
-  if(j>=0) return "jv"+j;
-  const a = STATE.added.find(x=>x.name.toLowerCase()===n);
-  if(a) return a.id;
-  return null;
+// strip a trailing/embedded school name (and "HS") that a paste leaves on the name,
+// including the "Name . School HS" separator SportTrax sometimes copies
+function stripTeamFromName(name){
+  let n = (name||"").replace(/\s+[·.|,]\s+/g," ");        // " . " / " · " separators -> space
+  for(const t of CANON_TEAMS){
+    const e = t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+    n = n.replace(new RegExp("\\s*"+e+"(\\s+hs)?\\s*$","i"), "");   // trailing school
+    n = n.replace(new RegExp("\\s+"+e+"(\\s+hs)?\\s+","i"), " ");   // embedded school
+  }
+  return n.replace(/\s+hs\b/ig,"").replace(/\s{2,}/g," ").trim();
+}
+// find a 6A school named anywhere in a string
+function detectTeam(text){
+  const low=(text||"").toLowerCase();
+  for(const t of CANON_TEAMS){ if(low.includes(t.toLowerCase())) return t; }
+  if(low.includes("american fork")) return "American Fork";
+  return "";
+}
+// every runner currently known for the active gender (returners, JV fills, depth, added)
+function allKnownRunners(){
+  const out=[];
+  RETURNERS.forEach(r=>out.push({id:r.id, name:r.name, team:r.team}));
+  JV_FILLS.forEach((f,i)=>out.push({id:"jv"+i, name:f.name, team:f.team}));
+  DEPTH.forEach((f,i)=>out.push({id:"dp"+i, name:f.name, team:f.team}));
+  (STATE.added||[]).forEach(a=>out.push({id:a.id, name:a.name, team:a.team}));
+  return out;
+}
+function isDuplicate(name, team){ return !!findRunnerId(name, team); }
+/* Resolve a pasted name to an existing runner id across ALL pools. Name is matched
+   after stripping any school text; team disambiguates same-name runners. */
+function findRunnerId(name, team){
+  const n = normName(stripTeamFromName(name));
+  if(!n) return null;
+  const tt = normalizeTeam(team||"");
+  const named = allKnownRunners().filter(r=> normName(r.name)===n);
+  if(!named.length) return null;
+  if(tt){ const tm = named.find(r=> normalizeTeam(r.team)===tt); if(tm) return tm.id; }
+  return named[0].id;
 }
 function isGraduated(name){
-  const n = name.toLowerCase();
-  return ALL_2025.some(r=>r.name.toLowerCase()===n && r.grade==="Sr");
+  const n = normName(stripTeamFromName(name));
+  return ALL_2025.some(r=>r.grade==="Sr" && normName(r.name)===n);
 }
 function toast(msg){
   const t=document.getElementById("toast");
@@ -2156,7 +2216,7 @@ document.getElementById("parseBtn").onclick = ()=>{
     return;
   }
   PARSED = rows.map((r,i)=>{
-    const id = findRunnerId(r.name);
+    const id = findRunnerId(r.name, r.team);
     const grad = isGraduated(r.name);
     const is6A = r.team && CANON_TEAMS.includes(r.team);
     let action, flag;
@@ -2199,7 +2259,7 @@ function renderParsePreview(){
     chosen.forEach((r,k)=>{
       let id;
       if(r.action==="log"){ id=r.id; (STATE.races[id]=STATE.races[id]||[]).push({meet, t:r.timeSec, cf}); logged++; }
-      else { id="a"+Date.now()+"_"+k; STATE.added.push({id, name:r.name, team:r.team, grade25:(r.grade&&r.grade!=="Sr")?r.grade:null, place25:null, time25:null, entryTime:r.timeSec}); (STATE.races[id]=STATE.races[id]||[]).push({meet, t:r.timeSec, cf}); added++; }
+      else { id="a"+Date.now()+"_"+k; STATE.added.push({id, name:stripTeamFromName(r.name), team:normalizeTeam(r.team)||r.team, grade25:(r.grade&&r.grade!=="Sr")?r.grade:null, place25:null, time25:null, entryTime:r.timeSec}); (STATE.races[id]=STATE.races[id]||[]).push({meet, t:r.timeSec, cf}); added++; }
       if(r.team){ (racedByTeam[r.team]=racedByTeam[r.team]||[]).push({id, t:r.timeSec}); }
     });
 
@@ -2241,6 +2301,7 @@ function renderParsePreview(){
   (async function(){
     try{
       await loadState();
+      dedupAdded("girls"); dedupAdded("boys");
       setActiveDataset();   // apply the loaded gender
       updateGenderUI();
       render();
