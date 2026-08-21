@@ -182,6 +182,26 @@
   /* ---------- Update tab ---------- */
   .card{background:var(--panel);border:1px solid var(--mist);border-radius:14px;padding:16px;box-shadow:var(--shadow);margin-top:12px}
   .card h3{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;margin:0 0 3px;letter-spacing:.02em}
+  .card.collapsible .card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;background:none;border:none;padding:0;margin:0;cursor:pointer;font-family:inherit;text-align:left;color:inherit}
+  .card.collapsible .card-head h3{margin:0}
+  .card.collapsible .chev{font-size:20px;color:var(--muted);transition:transform .2s;flex:none}
+  .card.collapsible.collapsed .chev{transform:rotate(-90deg)}
+  .card.collapsible .card-body{margin-top:12px}
+  .card.collapsible.collapsed .card-body{display:none}
+  /* logged-races grouped list */
+  .logmeet{border:1px solid var(--mist);border-radius:11px;margin-bottom:8px;overflow:hidden;background:#fff}
+  .logmeet-head{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;background:none;border:none;padding:11px 13px;cursor:pointer;font-family:inherit;text-align:left;color:inherit}
+  .logmeet-head .lm-name{font-weight:600;font-size:14.5px}
+  .logmeet-head .lm-meta{font-size:12px;color:var(--muted);margin-top:1px}
+  .logmeet-head .lm-chev{font-size:18px;color:var(--muted);transition:transform .2s;flex:none}
+  .logmeet.open .lm-chev{transform:rotate(180deg)}
+  .logmeet-body{display:none;border-top:1px dashed var(--mist);padding:4px 13px 8px}
+  .logmeet.open .logmeet-body{display:block}
+  .logrow{display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px dashed var(--mist)}
+  .logrow:first-child{border-top:none}
+  .logrow .lr-nm{flex:1;font-size:14px}
+  .logrow .lr-nm small{display:block;color:var(--muted);font-size:11.5px}
+  .logrow .lr-t{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px}
   .card p.hint{font-size:12.5px;color:var(--muted);margin:0 0 12px}
   .field{display:flex;flex-direction:column;gap:5px;margin-bottom:11px}
   .field label{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
@@ -556,7 +576,17 @@
     </div>
 
     <div class="card">
-      <h3>Log a 2026 race result</h3>
+      <h3>Logged races</h3>
+      <p class="hint">Every race you've logged, grouped by meet. Tap a meet to see the individual results inside it.</p>
+      <div class="loglist" id="logList"></div>
+      <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn ghost tiny" id="resetBtn">Clear all my inputs</button>
+      </div>
+    </div>
+
+    <div class="card collapsible collapsed" id="cardLogOne">
+      <button class="card-head" type="button"><h3>Log a single 2026 result</h3><span class="chev">⌄</span></button>
+      <div class="card-body">
       <p class="hint">Enter what a runner actually ran this season. Her projected time and her place on the board update immediately — someone racing slower than expected will slide down.</p>
       <div class="field">
         <label for="logRunner">Runner</label>
@@ -577,10 +607,12 @@
         <select id="logCourse"></select>
       </div>
       <button class="btn primary" id="logAdd">Add result</button>
+      </div>
     </div>
 
-    <div class="card">
-      <h3>Add a runner</h3>
+    <div class="card collapsible collapsed" id="cardAddRunner">
+      <button class="card-head" type="button"><h3>Add a runner</h3><span class="chev">⌄</span></button>
+      <div class="card-body">
       <p class="hint">Two uses. <b>Complete a real returner</b> who finished below last year's top 50 (Lehi's 4th–7th, etc.): give her 2025 place, time, and grade and she becomes a true returner with an up/down arrow — and takes a “proj JV” slot on her team. <b>Or promote a JV runner</b> into varsity: leave the 2025 fields blank and just give a projected time. Tag JV promotes in the name, e.g. "Camille Shields (6th runner)".</p>
       <div class="field">
         <label for="newName">Name</label>
@@ -616,15 +648,9 @@
         <input id="newTime" placeholder="mm:ss  e.g. 20:05">
       </div>
       <button class="btn primary" id="newAdd">Add runner</button>
-    </div>
-
-    <div class="card">
-      <h3>Logged this season</h3>
-      <div class="loglist" id="logList"></div>
-      <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn ghost tiny" id="resetBtn">Clear all my inputs</button>
       </div>
     </div>
+
   </section>
 
 </div>
@@ -1891,22 +1917,43 @@ function nameById(id){
   const r=RETURNERS.find(x=>x.id===id); if(r) return r.name;
   const a=STATE.added.find(x=>x.id===id); return a?a.name:id;
 }
+let LOG_OPEN = new Set();   // which meet groups are expanded
 function renderLog(){
   const items=[];
   for(const id in STATE.races){
     for(let i=0;i<STATE.races[id].length;i++){
       const rc=STATE.races[id][i];
-      items.push({id,i,meet:rc.meet,t:rc.t,cf:rc.cf||0});
+      items.push({id,i,meet:(rc.meet||"Unnamed race"),t:rc.t,cf:rc.cf||0});
     }
   }
   const list=document.getElementById("logList");
-  if(!items.length){ list.innerHTML=`<div class="empty">No races logged yet. Add one above and watch the board move.</div>`; return; }
-  list.innerHTML = items.map(it=>
-    `<div class="logitem">
-       <div class="li-main"><b>${nameById(it.id)}</b><br><span style="color:var(--muted);font-size:12px">${it.meet||"race"}${it.cf?" · "+courseLabel(it.cf):""}</span></div>
-       <div><span class="li-time">${fmt(it.t)}</span><button class="btn danger tiny" data-del="${it.id}|${it.i}">remove</button></div>
-     </div>`
-  ).join("");
+  if(!items.length){ list.innerHTML=`<div class="empty">No races logged yet. Paste a meet above and it'll show up here.</div>`; return; }
+  // group by meet name (in first-seen order)
+  const groups=[]; const idx={};
+  items.forEach(it=>{ if(idx[it.meet]==null){ idx[it.meet]=groups.length; groups.push({meet:it.meet, rows:[]}); } groups[idx[it.meet]].rows.push(it); });
+  list.innerHTML = groups.map(g=>{
+    const cf = g.rows.find(r=>r.cf)?.cf || 0;
+    const open = LOG_OPEN.has(g.meet);
+    const rows = g.rows.map(it=>{
+      const adj = it.cf ? ` <span style="color:var(--muted);font-weight:500">→ ${fmt(it.t-it.cf)}</span>` : "";
+      return `<div class="logrow">
+        <span class="lr-nm">${nameById(it.id)}${it.cf?`<small>${courseLabel(it.cf)}</small>`:""}</span>
+        <span class="lr-t">${fmt(it.t)}${adj}</span>
+        <button class="btn danger tiny" data-del="${it.id}|${it.i}">remove</button>
+      </div>`;
+    }).join("");
+    return `<div class="logmeet ${open?"open":""}">
+      <button class="logmeet-head" type="button" data-meet="${g.meet.replace(/"/g,'&quot;')}">
+        <span><span class="lm-name">${g.meet}</span><span class="lm-meta">${g.rows.length} runner${g.rows.length!==1?"s":""}${cf?" · "+courseLabel(cf):""}</span></span>
+        <span class="lm-chev">⌄</span>
+      </button>
+      <div class="logmeet-body">${rows}</div>
+    </div>`;
+  }).join("");
+  list.querySelectorAll(".logmeet-head").forEach(b=>b.onclick=()=>{
+    const m=b.dataset.meet; if(LOG_OPEN.has(m)) LOG_OPEN.delete(m); else LOG_OPEN.add(m);
+    b.closest(".logmeet").classList.toggle("open");
+  });
   list.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{
     const [id,idx]=b.dataset.del.split("|");
     STATE.races[id].splice(+idx,1);
@@ -1923,6 +1970,11 @@ function switchTab(pane){
   document.querySelectorAll(".pane").forEach(s=>s.classList.toggle("hidden", s.id!=="pane-"+pane));
 }
 document.querySelectorAll(".tab").forEach(t=> t.onclick=()=>switchTab(t.dataset.pane));
+
+// collapsible cards (Log a Race tab)
+document.querySelectorAll(".card.collapsible .card-head").forEach(h=>{
+  h.onclick=()=> h.closest(".card.collapsible").classList.toggle("collapsed");
+});
 
 // gender toggle (girls / boys)
 function updateGenderUI(){
